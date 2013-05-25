@@ -1,0 +1,316 @@
+\section{Chan-Vese Levelset}\label{section:cv}
+\subsection{Formulation}
+Let $\Omega\in \R^2$ be the image domain and let $\partial\Omega$ be the boundary. Furthermore, let $I:\Omega\to \Gamma$ be an image, where $\Gamma\subset\R$ are the intensity values $\Im(f)$.\\
+We define a curve $C$ on $\Omega$ that is evolved using the image $I$ such that the image domain $\Omega$ is segmented into two parts. Let $\omega\subset\Omega$ denote the interior of the curve, hence the inner segment. Conversely, $\Omega\backslash\overline{\omega}$ describes the outer segment. Accordingly $C=\partial\omega$ describes the boundary of the inner segment.\\
+To optain a segmentation of the image $I$ on the domain $\Omega$, a functional of the following form is used:
+
+\begin{equation}
+  F_1 = \mathcal{M}_{\omega} + \mathcal{M}_{\Omega\backslash\overline{\omega}},
+\end{equation}
+
+where $\mathcal{M}_{\omega}$ measures the similarity of the inner segment and $\mathcal{M}_{\Omega\backslash\overline{\omega}}$ measures that of the outer segement. The following energy based functional was proposed by \cite{chan.01}:
+
+\begin{equation}
+  F_1(C,c_1,c_2) = \int_{\omega} (I(x,y)-c_1)^2 \df x \df y + \int_{\Omega\backslash\overline{\omega}} (I(x,y)-c_2)^2 \df x \df y,\label{F0}
+\end{equation} 
+
+corresponding to the splitting of the image in two pieces with different constant intensity.\\
+Suppose that $I$ is a simple image consisting of a constant square on a constant background, the functional $F_1$ will be minimal exactly when $C$ lies on the boundary of the square. Letting $c_1$ be given by any value  $I(x,y)$ in the square and $c_2$ by any value $I(x,y)$ in the background, $(I(x,y)-c_1)^2$ and $\abs{I(x,y)-c_2}^2$ will equal 0 on the entire domain, hence $F_1=0$ which is a minimum, since $F$ is positive.\\
+
+This leads to the idea of measuring the difference between the image values and some fixed but unknown values $c_1,c_2$ defined on the subdomains $\omega$ and $\Omega\backslash \overline{\omega}$, seperated by an unknown curve $C$. Then $F_1$ is minimized by ajusting the curve $C$ such that any $I(x,y)$ is placed into the segment, where the difference to those values is the least.\\
+
+Adding regularisation terms, penalizing the length of $C$ and the area of $\omega$ yields the following functional:
+
+\begin{equation}
+  \begin{split}
+    F_2(C,c_1,c_2) &= \mu\,{\rm Length}(C) + \nu\,{\rm Area}(\omega) + \lambda_1\int_{\omega}(I(x,y)-c_1)^2 \df x \df y\\
+    &+ \lambda_2\int_{\Omega\backslash\overline{\omega}} (I(x,y)-c_2)^2 \df x \df y,
+  \end{split}\label{F1}
+\end{equation}
+
+where the parameters $\lambda_1,\,\lambda_2\in (0,\infty)$ and $\mu,\,\nu\in [0,\infty)$ are fixed to weighten the different terms. By minimizing for the length, we ensure that the image is not segmented into many small disjoint parts. This also reduces the influence of possible noise in the image.\\
+Furthermore the Length minimization causes the inner segment to become more convex, since the length of the curve is minimal, when $C$ has the form of a circle.\\
+Additionally the Area-term causes the area of the inner segment as small as possible. The area regularization has to some extent the opposite effect of the length regularization, since small disjoint segments have a smaller area than one convex segment, which is prefered by the length regularization.\\
+
+In order to minimize $F_2$, we consider the minimalization problem $\inf_{C,c_1,c_2}F_2(C,c_1,c_2)$. The contour $C$ can be represented as the $0$-levelset in the levelset method as follows. The levelset function is represented by a Lipschitz-function $\phi:\Omega\to\R$, such that
+
+\begin{align*}
+  \phi(x,y) = 
+  \begin{cases}
+    0 & \mbox{ for } (x,y) \in \partial\omega\\
+    > 0 & \mbox{ for } (x,y) \in \omega\\
+    < 0 & \mbox{ for } (x,y) \in \Omega\backslash\overline{\omega}
+  \end{cases}.
+\end{align*}
+
+The concept is illustrated in figure \ref{fig:levelsetconcept}.
+
+\begin{figure}
+  \centering
+  \subfigure[\label{subfig:contour}]{\includegraphics[width=0.4\textwidth]{levelset.eps}}
+  \quad
+  \subfigure[\label{subfig:levelset}]{\includegraphics[width=0.4\textwidth]{levelset3d.eps}}
+  \caption{Illustrating the concept of a levelset function. \ref{subfig:contour} The domain $\Omega$ with a contour illustrating the levelset function as defined. \ref{subfig:levelset} The corresponding levelset initialised as a signed distance map using matlabs \texttt{bwdist}}\label{fig:levelsetconcept}
+\end{figure}
+
+In order to introduce $\phi$ into the functional $F_2$, we replace $C$ by $\phi$ using the heavyside function $H:\R \to \{0,1\}$ and the corresponding dirac measure $\delta:\R\to \R^+$, given by
+
+\begin{equation}
+  H(z) = \begin{cases}
+    1,& \mbox{ if }  z \geq 0\\
+    0,& \mbox{ if }  z < 0
+  \end{cases}, \quad 
+  \delta(z) = \frac{dH(z)}{dz}.
+\end{equation}
+
+
+The curve $C$ corresponds to the 0'th level curve of $\phi$. This can be represented using the dirac measure that is 0 everywhere except in $z=0$. We use the heavyside function $H(\phi)$ to indicate the closure of the inside $\overline{\omega}$, where $\phi > 0$. Correspondingly, $1-H(\phi)$ to indicate the outside $\Omega\backslash \overline{\omega}$, where $\phi < 0$.\\
+Taking this into account, the functional \eqref{F1} can thus be represented equivalently by
+
+\begin{align}
+\begin{split}
+  F(\phi,c_1,c_2) &= \mu \int_\Omega \delta(\phi(x,y))\abs{\nabla\phi(x,y)} \df x \df y + \nu \int_{\Omega} H(\phi(x,y)) \df x \df y\\
+  &+ \lambda_1\int_{\Omega}(I(x,y)-c_1)^2H(\phi(x,y)) \df x \df y + \lambda_2\int_{\Omega} (I(x,y)-c_2)^2 (1-H(\phi(x,y)))\df x \df y\label{F2}
+\end{split}
+\end{align}
+
+in terms of a levelset formulation. Note that expanding the integral over $\omega$ to $\overline{\omega}$ using the heavyside function does not influence the value of $F$, since the boundary measures 0. The length term is derived from $\abs{\nabla H(\phi(x,y))} = \delta(\phi(x,y))\abs{\nabla \phi(x,y)}$.
+
+\subsection{Minimization}
+We introduce regularized versions of the heavyside- and Diracfunctions $H_\epsilon$ and $\delta_\epsilon$ that are continuous, such that $H_\epsilon\to H$ as $\epsilon\to 0$, $H'(z) = \delta_\epsilon$.\\
+In order to minimize for $c_1$, we fix $\phi$ and $c_2$ and minimize \eqref{F2} wrt. $c_1$. Hence, by elimentary calculus, we find $c_1$ such that $\frac{\partial F}{\partial c_1}=0$ and assure that $\frac{\partial^2 F(\phi,c_1,c_2)}{\partial c_1^2} > 0$. This will find a minimum of $F$ wrt. $c_1$.\\
+Disregarding zero-terms, we can use the Leibnitz integration rule because of the continuity assumption of $H_\epsilon$ and $\delta_\epsilon$. This leads to
+
+\begin{align}
+  0 &= \frac{\partial}{\partial c_1} \left(\int_\Omega (I(x,y)-c_1)^2H(\phi(x,y))\df x \df y\right)=\int_\Omega \frac{\partial}{\partial c_1} \left((I(x,y)-c_1)^2H(\phi(x,y))\right)\df x \df y\\
+    &= \int_\Omega -2(I(x,y)-c_1)H(\phi(x,y))\df x \df y\label{dFdc1}
+\end{align}
+
+Splitting the integral and rearranging gives
+
+\begin{align*} 
+  \int_\Omega I(x,y)H(\phi(x,y))\df x\df y = c_1\int_\Omega H(\phi(x,y))\df x \df y.
+\end{align*}
+
+Furthermore we have 
+
+\begin{equation}
+\frac{\partial^2 F}{\partial c_1^2} \stackrel{\eqref{dFdc1}}{=} \frac{\partial}{\partial c_1} \int_\Omega -2(I(x,y)-c_1)H(\phi(x,y))\df x \df y = \int_\Omega 2H(\phi(x,y))\df x \df y \geq 0\; \text{for all} \; c_1.
+\end{equation}
+
+A similar argument can be formulated for $c_2$. Thus, we can express $c_1$ and $c_2$ as constants dependent on $\phi$ by
+
+\begin{equation}
+  c_1(\phi) = \frac{\int_\Omega I(x,y) H(\phi(x,y)) \df x \df y}{\int_\Omega H(\phi(x,y)) \df x \df y}, \quad 
+  c_2(\phi) = \frac{\int_\Omega I(x,y) (1-H(\phi(x,y))) \df x \df y}{\int_\Omega (1-H(\phi(x,y))) \df x \df y},
+\end{equation}
+
+if neither the interior or the exterior is empty, i.e. $\int_\Omega H(\phi(x,y))\df x \df y, \int_\Omega 1-H(\phi(x,y))\df x \df y\neq 0$. If the exterior or interior is empty, the choice of $c_1$ or $c_2$ does not matter. \\
+Hence $c_1(\phi)$ is given by the average of $I$ where $\phi >0$ and $c_2$ is given by the average of $I$, where $\phi<0$.
+
+In order to be able to minimize $F$ wrt. $\phi$ using the Euler-Lagrange Equation, the terms we integrate over need to be at least $C^4(\bar{\Omega})$ \cite{fox.50}. Hence we require that the regularizations $H_\epsilon$, $\delta_\epsilon$ to be at least $C^4(\bar{\Omega})$.\\
+Keeping $c_1$ and $c_2$ fixed, the Euler Lagrange-equation of $F$ is given by
+
+\begin{equation}\label{EulerLagrange}
+  0 = \partial_\phi L - \partial_x (\partial_{\phi'}L_x)-\partial_y(\partial_{\phi'} L_y)
+\end{equation}
+
+where $L$ is the content of the integrals in \eqref{F2}, $\partial_a$ denotes the differential operater wrt. $a$ and $L_x,L_y$ denote the $x$- and $y$-part of $L$ respectively. Thus
+
+\begin{equation}
+  \partial_\phi L = \left(\lambda_1\abs{u-c_1}^2 - \lambda_2\abs{u-c_2}^2 + \nu \right)\delta_\epsilon(\phi) + \mu\delta_\epsilon'(\phi)\abs{\nabla\phi}
+\end{equation}
+
+and using the chain rule on $\abs{\nabla\phi} = \sqrt{\nabla\phi^2}$, hence 
+
+\begin{equation}
+  \frac{\partial}{\partial \phi_x'}\sqrt{\nabla\phi^2}=\frac{2\phi_x'}{2\sqrt{\phi^2}}=\frac{\phi_x'}{\abs{\nabla\phi}},
+\end{equation}
+
+gives
+
+\begin{equation}
+  \partial_x (\partial_{\phi'}L_x) = \mu \left(\delta_\epsilon'(\phi)\frac{(\phi_x')^2}{\abs{\nabla \phi}} + \delta_\epsilon(\phi)\partial_x\left(\frac{\phi_x'}{\abs{\nabla\phi}}\right)\right).
+\end{equation}
+
+The $\partial_y (\partial_{\phi'}L_y)$-part is found similarly. Combining those terms according to \eqref{EulerLagrange} gives
+
+\begin{align*}
+ 0 &= \left(\lambda_1(u-c_1)^2 - \lambda_2(u-c_2)^2 + \nu \right)\delta_\epsilon(\phi) + \mu\delta_\epsilon'(\phi)\abs{\nabla\phi} - \mu \left(\delta_\epsilon'(\phi)\frac{(\phi_x')^2}{\abs{\nabla \phi}} + \delta_\epsilon(\phi)\partial_x\left(\frac{\phi_x'}{\abs{\nabla\phi}}\right)\right)\\
+  & - \mu \left(\delta_\epsilon'(\phi)\frac{(\phi_y')^2}{\abs{\nabla \phi}} + \delta_\epsilon(\phi)\partial_y\left(\frac{\phi_y'}{\abs{\nabla\phi}}\right)\right)\\
+  &= \left(\lambda_1(u-c_1)^2 - \lambda_2(u-c_2)^2 + \nu  - \mu \nabla \cdot \left(\frac{\nabla\phi}{\abs{\nabla\phi}}\right)\right)\delta_\epsilon(\phi) + \left(\frac{(\nabla\phi)^T(\nabla\phi)}{\abs{\nabla\phi}}-\frac{(\phi_x')^2}{\abs{\nabla\phi}}-\frac{(\phi_y')^2}{\abs{\nabla\phi}}\right)\mu\delta_\epsilon'(\phi),
+  \intertext{where the last equality is established by observing that $\abs{\nabla\phi} = \frac{(\nabla\phi)^T(\nabla\phi)}{\abs{\nabla\phi}}$. Then by $\frac{(\nabla\phi)^T(\nabla\phi)}{\abs{\nabla\phi}}=\frac{(\phi_x')^2}{\abs{\nabla\phi}}+\frac{(\phi_y')^2}{\abs{\nabla\phi}}$, we optain}
+ &=\left(\lambda_1(u-c_1)^2 - \lambda_2(u-c_2)^2 + \nu  - \mu \nabla \cdot \left(\frac{\nabla\phi}{\abs{\nabla\phi}}\right)\right)\delta_\epsilon(\phi)
+\end{align*}
+
+Now we introduce an artifical time parameterization $t\geq 0$ for the steepest descent direction. Thus we introduce $\phi: [0,\infty) \times \Omega \to \R$ as $\phi(t,x,y)$, such that $\phi(0,x,y)=\phi_0(x,y)$, where $\phi_0(x,y)$ is an inital levelset function. This gives the following equation that we wish to minimize:
+
+\begin{equation}\label{dphidt}
+  \frac{\partial \phi}{\partial t}=\left(-\lambda_1(u-c_1)^2 + \lambda_2(u-c_2)^2 - \nu  + \mu \nabla \cdot \left(\frac{\nabla\phi}{\abs{\nabla\phi}}\right)\right)\delta_\epsilon(\phi),
+\end{equation}
+
+As boundary condition, \cite{chan.01} poses 
+
+\begin{equation}
+  \frac{\partial \phi}{\partial \vec{n}}\frac{\delta_\epsilon(\phi)}{\abs{\nabla\phi}}=0\text{ on }\partial\Omega,
+\end{equation} 
+
+where $\frac{\partial\phi}{\partial \vec{n}}$ denotes the derivative wrt. the external normal vector on the boundary.
+
+
+\subsection{Numerical Scheme and Implementation of the Chan-Vese Levelset}
+The following $C^\infty(\overline{\Omega})$ regularizations of the heavyside- and dirac function were suggested by \cite{chan.01}. They are visualized in figure \ref{fig:regularizations} for different values of $\epsilon$.
+\begin{figure}
+  \centering
+  \subfigure[\label{subfig:contour}]{\includegraphics[width=0.4\textwidth]{Hside.eps}}
+  \quad
+  \subfigure[\label{subfig:levelset}]{\includegraphics[width=0.4\textwidth]{Dirac.eps}}
+  \caption{The regularizations of the heavyside function and the dirac measure for different values of $\epsilon$.}\label{fig:regularizations}
+\end{figure}
+
+\begin{equation}
+  H_\epsilon(z) = \frac{1}{2}\left(1+\frac{2}{\pi}\arctan\left(\frac{z}{\epsilon}\right)\right),\quad \frac{\partial}{\partial z}H(z) = \delta_\epsilon(z) = \frac{\epsilon}{\pi z^2+\pi\epsilon^2}
+\end{equation}
+
+Since the functional is non-convex, there might appear several local minima. The discretization should not depend on the initial choice $\phi_0$ which is prevented by choosing regularizations with infinite support. Thus the heavyside and dirac functions act on the entire levelset function instead of just influencing a small neighborhood around the 0'th level curve.\\
+\iffalse
+\begin{figure}
+        \centering
+        \begin{subfigure}[b]{0.5\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{figures/Hside.eps}
+        \end{subfigure}%
+        ~ %add desired spacing between images, e. g. ~, \quad, \qquad etc.
+          %(or a blank line to force the subfigure onto a new line)
+        \begin{subfigure}[b]{0.5\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{figures/Dirac.eps}
+        \end{subfigure}
+
+\end{figure}
+\fi
+
+The discretization of $\phi$ is done by an implicit finite difference system. Let $h$ be the space stepsize and let $\Delta t$ be the time stepsize. An $M\times N$ equidistant grid is used, where $(x_i,y_j) = (i\cdot h,j\cdot h)$ are the grid points for $0\leq i \leq M+1$, $0\leq j \leq N+1$. $\phi(t,x,y)$ is approximated by $\phi_{i,j}^n = \phi(n\Delta t, x_i,y_j)$ for $n\in\N$ using $\phi_{i,j}^0 = \phi_0$, the initial levelset as a signed distance function. The boundaries are thus $\phi_{0,j}^n$, $\phi_{M+1,j}^n$, $\phi_{i,0}^n$, $\phi_{i,N+1}$.\\
+
+The numerical scheme is derived from \eqref{dphidt}, where 
+
+\begin{align}
+\begin{array}{ll}
+\Delta_{-}^x \phi_{i,j} = \phi_{i,j}-\phi_{i-1,j}, & \Delta_{+}^x \phi_{i,j} = \phi_{i+1,j}-\phi_{i,j},\\
+\Delta_{-}^y \phi_{i,j} = \phi_{i,j}-\phi_{i,j-1}, & \Delta_{+}^y \phi_{i,j} = \phi_{i,j+1}-\phi_{i,j}\\
+\Delta_c^x  \phi_{i,j} = \phi_{i+1,j}-\phi_{i-1,j},& \Delta_c^y \phi_{i,j} = \phi_{i,j+1}-\phi_{i,j-1},
+\end{array}
+\end{align}
+
+and the discretization and linearization looks as follows:
+
+\begin{equation}
+  \begin{split}
+    &\frac{\phi_{i,j}^{n+1}-\phi_{i,j}^n}{\Delta t} = \delta_\epsilon(\phi_{i,j}^n) \left[\frac{\mu}{h^2}\cdot 
+\left(\Delta_-^x \left(\frac{\Delta_+^x\phi_{i,j}^{n+1}}{\sqrt{(\Delta_+^x\phi_{i,j}^n)^2/h^2 + (\Delta_c^y \phi_{i,j}^n)/(2h)^2}}\right)\right.\right.\\
+    &\left.\left.+ \Delta_-^y \left(\frac{\Delta_+^y\phi_{i,j}^{n+1}}{\sqrt{(\Delta_+^y\phi_{i,j}^n)^2/h^2 + (\Delta_c ^x \phi_{i,j}^n)/(2h)^2}}\right)\right)
+    - \nu - \lambda_1(u_{i,j} - c_1(\phi^n))^2 + \lambda_2(u_{i,j} - c_2(\phi^n))^2\right].
+  \end{split}\label{ImplMeth}
+\end{equation}
+
+Note that the absolute gradient in the divergence term is handled by a central approximation in the other direction of the nominator, and a combined backward-forward approximation in the nominators direction.
+In order to solve the implicit difference scheme posed by \cite{chan.01}, the coefficients $A,B,C$ and result vector $b$ are derived from \eqref{ImplMeth}:
+For convenience, let
+
+\begin{align*}
+\zeta_{i,j}^n = \left((\Delta_+^x\phi_{i,j}^n)^2/h^2 + (\Delta_c^y \phi_{i,j}^n)/(2h)^2\right)^{-1/2},\quad
+\eta_{i,j}^n = \left((\Delta_+^y\phi_{i,j}^n)^2/h^2 + (\Delta_c ^x \phi_{i,j}^n)/(2h)^2\right)^{-1/2},
+\end{align*}
+
+then
+
+\begin{align*}
+A_{i,j} &= \frac{-\delta_\epsilon(\phi_{i,j}^n)\cdot\mu\cdot \zeta_{i,j}^n}{h^2},\\
+B_{i,j} &= \frac{-\delta_\epsilon(\phi_{i,j}^n)\cdot\mu\cdot\eta_{i,j}^n}{h^2},\\
+C_{i,j} &= \frac{-\delta_\epsilon(\phi_{i,j}^n)\cdot\mu\cdot \zeta_{i-1,j}^n}{h^2},\\
+D_{i,j} &= \frac{-\delta_\epsilon(\phi_{i,j}^n)\cdot\mu\cdot\eta_{i,j-1}^n}{h^2},\\
+E_{i,j} &= \frac{2\delta_\epsilon(\phi_{i,j}^n)\cdot\mu\cdot(\zeta_{i,j}^n + \eta_{i,j}^n + \zeta_{i-1,j}^n +\eta_{i,j-1}^n)}{h^2}+\frac{1}{\Delta t},\\
+b_{i,j} &= \delta_\epsilon(\phi_{i,j}^n)\left(\nu + \lambda_1(u_{i,j}-c_1(\phi^n))^2 - \lambda_2(u_{i,j}-c_2(\phi^n))^2\right) + \frac{\phi_{i,j}^n}{\Delta t}.
+\end{align*}
+
+Hence for the $n$'th timestep, we optain
+
+\begin{equation}
+A_{i,j}\phi_{i+1,j}^{n+1} + B_{i,j}\phi_{i,j+1}^{n+1} + C_{i,j}\phi_{i-1,j}^{n+1} + D_{i,j}\phi_{i,j-1}^{n+1} + E_{i,j}1\phi_{i,j}^{n+1} = b\label{LinSys}
+\end{equation}
+
+Since $\delta_\epsilon$ has infinite support, i.e. $\delta_\epsilon(\phi)\neq 0\;\forall (x,y)\in\Omega$, the boundary condition can be considered as a Neumann condition. Thus
+
+\begin{equation}
+\frac{\partial \phi}{\partial \vec{n}}\frac{\delta_\epsilon(\phi)}{\abs{\nabla\phi}}=0 \implies \frac{\partial \phi}{\partial \vec{n}}=0.
+\end{equation}
+
+Using forward and backward difference schemes of second order results in the following boundary approximations:
+
+\begin{align*}
+&\text{Left boundary:}\quad \phi_{0,j}^{n+1} = \frac{-\phi_{2,j}^{n+1}+4\phi_{1,j}^{n+1}}{3},\\
+&\text{Right boundary:}\quad \phi_{M+1,j}^{n+1} = \frac{-\phi_{M-1,j}^{n+1}+4\phi_{M,j}^{n+1}}{3},\\
+&\text{Bottom boundary:}\quad \phi_{i,0}^{n+1} = \frac{-\phi_{i,2}^{n+1}+4\phi_{i,1}^{n+1}}{3},\\
+&\text{Top boundary:}\quad \phi_{i,N+1}^{n+1} = \frac{-\phi_{i,N-1}^{n+1}+4\phi_{i,N}^{n+1}}{3}.
+\end{align*}
+
+Since the scheme is implicit, it is necessary to solve an equation system. In order to take the two dimensions into account, a pentadiagonal matrix $P$ is created as explained in \cite{holm.07}. It is arranged such that the equation system $P\vec{\phi}^{n+1} = b$ is organized as in \eqref{LinSys} yielding
+\[
+\vec{\phi}^{n+1} = 
+\begin{bmatrix}
+  \phi_{1,1}^{n+1} & \phi_{2,1}^{n+1} & \cdots & \phi_{N-1,1}^{n+1} & \phi_{N,1}^{n+1} & \phi_{1,2}^{n+1} & \phi_{2,2}^{n+1} & \cdots 
+  & \phi_{N-1,M}^{n+1} & \phi_{N,M}^{n+1}
+\end{bmatrix}^T
+\]
+
+The boundary conditions are also added to $P$, such that they appear on the rows, where the boundary is hit.
+
+Using the levelset approach and the dirac function, the levelset curve might not be a signed distance map anymore, i.e. $\abs{\nabla \phi}\neq 1$. Thus the $\nabla\phi$ can become too flat which prevents $\phi$ from evolving. $\nabla\phi$ might also become too steep which complicates the computation of the contour length. To prevent this, one reinitializes the levelset curve as a signed distance function, \cite{suss.94} poses the following evolution equation:
+
+\begin{align}
+\psi_\tau = \sign(\phi(t))(1-\abs{\psi})\label{reinit1}\\
+\psi(0,\cdot) = \phi(t,\cdot)
+\end{align}
+
+This will preserve the 0-levelset. The new levelset function will then be $\psi$ and the value of $\abs{\nabla \psi}$ will converge to 1.
+For numerical purposes, it is convenient to smoothen the sign-function: $\sign_\epsilon(\phi) = \phi/\sqrt{\phi^2+\epsilon^2}$.\\
+\eqref{reinit1} can be written as
+
+\begin{equation}
+\psi_\tau + \vec{w}\cdot\nabla\psi = \sign_\epsilon(\phi), \quad \vec{w} = \sign_\epsilon(\phi)\frac{\nabla\psi}{\abs{\nabla\psi}}\label{reinit2}
+\end{equation}
+
+Now, \eqref{reinit2} is a non-linear hyperbolic equation with characteristics given by $\vec{w}$ and $\vec{w}$ is a unit normal vector pointing outward from the 0-levelset.\\
+\cite{suss.94} poses the following discretization:
+
+\begin{align}
+a \equiv \frac{\Delta_x^- \psi_{i,j}}{h},\quad b \equiv \frac{\Delta_x^+ \psi_{i,j}}{h},\quad c \equiv \frac{\Delta_y^- \psi_{i,j}}{h}, \quad d \equiv \frac{\Delta_y^+ \psi_{i,j}}{h} 
+\end{align}
+
+where the gradient $\nabla \psi$ is approximated by 
+
+\begin{align}
+  G(\psi_{i,j}) = \begin{cases}
+    \sqrt{\max{(a^+)^2,(b^-)^2}+\max{(c^+)^2,(d^-)^2}}-1 & \mbox{ if } \phi_{i,j}>0\\
+    \sqrt{\max{(a^-)^2,(b^+)^2}+\max{(c^-)^2,(d^+)^2}}-1 & \mbox{ if } \phi_{i,j}<0\\
+    0 &\mbox{ otherwise,}
+  \end{cases}
+\end{align}
+
+where $+$ and $-$ denote the positive and the negative part respectively. Thus if the forward and the backward approximations of the derivatives yield different signs, the largest is chosen. In any other case, one of the will be 0. The equation \eqref{reinit2} is then updated by 
+
+\begin{equation}
+\psi_{i,j}^{n+1}=\psi_{i,j}^n - \Delta t \;\sign_\epsilon(\phi_{i,j})G(\psi_{i,j}^n).
+\end{equation}\vline
+
+Finally, the algorithm used to minimize $F$ looks as follows.
+
+\begin{lstlisting}
+Initialize %$\phi$% as a signed distance map
+Set n=1
+Repeat until the solution is stationary
+  Compute %$c_1(\phi^n)$% and %$c_2(\phi^n)$%
+  Solve the equation system %$Pv = b$%.
+  Reinitialize (optional)
+  n+=1
+\end{lstlisting}

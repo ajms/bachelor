@@ -1,0 +1,9 @@
+% Appendix A
+
+\chapter{Implementations} % Main appendix title
+
+\label{AppendixB} % For referencing this appendix elsewhere, use \ref{AppendixA}
+
+\lhead{\ref{AppendixB} \emph{Implementation}} % This is for the header on each page - perhaps a shortened title
+
+In order to calculate the convolution, the built-in fast Fourier Transform \texttt{fftn} from matlab is used. Since the Fourier transform assumes our image to be periodic, this might cause problems on the boundary, because smoothing on the boundary is transformed to the other boundary. Since most of the images, we are considering, have a plain background, this does not matter. For calculation of the gaussian scale space, an implementation \texttt{scalen} by Jon Sporring is used.\\

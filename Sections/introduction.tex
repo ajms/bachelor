@@ -1,0 +1,17 @@
+ % For referencing the chapter elsewhere, use \ref{Chapter1} 
+
+\lhead{\cref{chapter:introduction} \emph{Introduction}} % This is for the header on each page - perhaps a shortened title
+\chapter{Introduction}\label{chapter:introduction}
+
+Image segmentation is the process of partitioning an image into sets of pixels, so called segments, that share a certain property. The goal is to optain a simple representation that is easier to analyse than the original image. Often, the objective is to detect the boundaries of an object in the image to examine it further. This has its applications in medical image analysis, where one might be interested in investigating the structure, shape and size of an organ, given for instance a MRI-scanning.\\
+
+The levelset method is a flexible approach to do image segmentation. The idea is to evolve the contour that seperates the segments in the image. To accomplish this, a signed distance function is used, where the 0'th level curve represents the contour. The levelset function supports the propagation of the curve through the image.\\
+
+In this project, Chan \& Veses notion of the levelset method for 2-dimensional images is derived and described extensively in \cref{chapter:CVL}. The method is implemented, particular choices for the implementation are recorded in the appendix. The Chan Vese Levelset (CVL) method is stated in terms of a functional, based on measuring the similarity of two segments to their respective mean value. It also includes the regularizations for the contour length and the area of one segment in order to handle irregularities in an image.\\
+
+The main subject of this project is to develop Orderless Levelsets (OL), a method based on the CVL formulation. The idea is to use the concept of Locally Ordeless Images (LOI) to represent the image and the levelset function. In LOI, one discards the spatial information of the image and consider smooth histograms over the intensity values instead. The concept of LOI is described in \cref{chapter:LOI}.\\
+This formulation leads to a robust formulation of the levelset method that is not dependent on solving differential equations, hence there are no risks for numerical instabilities or large equation systems to solve. Instead a uncomplicated functional is stated that can be solve using well known optimization techniques. The OL-method is thus a simple, flexible method that has no spatial dependencies. The spatial independence furthermore implies that the method generalizes to n-dimensional images.\\
+The Orderless Levelset method is developed and formulated and proven to be well defined in \sref{section:OLform}. In \sref{section:OLder}, the differentiability of the resulting functional is shown, which is necessary for the process of optimization. The formulation is concretized in \sref{section:OLopt} and the optimization process is described. Furthermore the method is implemented, the implementation choices are documented in the appendix.\\
+
+The verification of the functionality and an investigation of the quality of the OL-method is performed in \cref{chapter:experiments}. This is done by constructing comparative experiments of the OL- and the CVL-method, covering a spectrum of different properties of the levelset methods. Moreover the computation times of CVL and OL are compared and the convergence is examined.\\
+\cref{chapter:defthm} contains definitions and theorems necessary for derivations throughout the project. Finally, the report is concluded with an outlook on further work.

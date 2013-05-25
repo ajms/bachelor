@@ -1,0 +1,189 @@
+ % For referencing the chapter elsewhere, use \ref{Chapter1} 
+
+\lhead{\cref{chapter:defthm} \emph{Definitions and theorems}} % This is for the header on each page - perhaps a shortened title
+\chapter{Definitions and theorems}\label{chapter:defthm}
+
+This section contains definitions and theorems used throughout the other sections. The definitions are citet from different sources. The theorems are either proven or there is a reference to the proof.\\
+
+\section{Definitions of general concepts}
+\begin{definition}\label{parzen}
+Let $P:\R\to \R$ be a function such that $\int_\R P(x) \df x= 1$ and let $\{x_i\}_{i=1}^N$ be a set of $n$ samples of a random variable $X$ with probability density function $p(x)$. Then the Parzen estimate of $p$ is 
+
+\begin{equation}
+\tilde{p}_N(x) = \frac{1}{n\beta(N)}\sum_{i=1}^n P((x-x_i)/\beta(n)).
+\end{equation}
+
+It is required for $\beta(n)$ to be strictly a positive and $\lim_{n\to\infty}\beta(n) = 0$ to ensure convwergence. $\beta$ acts as scaling factor that controls the width of the Parzen window $P$. \cite{the.00,parzen.62}
+\end{definition}
+
+\begin{definition}\label{scalespace}
+Given an image $I:\Omega\to \R$, the scale-space is the family of derived signals $L(\vec{x},\sigma)$ given by the convolution of a kernel $G$ and the image $I$, i.e.
+
+\begin{equation}
+L(\vec{x},\sigma) = G(\vec{x},\sigma)*I(\vec{x}) = \int_{\Omega} G(\vec{y},\sigma)I(\vec{x}-\vec{y})d\vec{y}
+\end{equation}
+
+where $\sigma$ denotes the scale parameter and $*$ is the convolution operator wrt. $\vec{x}$.
+\end{definition}
+
+\section{B-splines}
+The definitions and theorems are formulated from the theory in \cite[chap.~6.5]{kin.02}.\\
+
+\begin{definition}\label{Bspline}
+Let $...,t_{-1},t_0<t_1<...$ be a real valued possibly infinite knot sequence. The basis B-splines $B_0^i: \R \to [0,1]$ of degree 0 are defined as
+
+\begin{equation}
+  B_i^0(x) = 
+  \begin{cases}
+    1 & \mbox{ if } t_i\leq x < t_{i+1}\\
+    0 & \mbox{ otherwise}
+  \end{cases}
+\end{equation}
+for $n\in\N$.
+
+The basis B-splines $B_i^k:\R\to [0,1]$ of degree $k$ are defined recursively by
+
+\begin{equation}
+  B_i^k(x) = \frac{x-t_i}{t_{i+k}-t_i} B_i^{k-1}(x) + \frac{t_{i+k}-x}{t_{i+k+1}-t_{i+1}} B_{i+1}^{k-1}(x) \quad \text{ for } k\geq 1,\;i\in \Z.\label{recurDef}
+\end{equation}
+\end{definition}\
+
+\begin{remark} of B-splines.
+  \begin{enumerate}
+    \item The support of $B_i^k$ is the interval $[t_i,t_{i+k+1})$.
+    \item $\displaystyle\sum_{i=-\infty}^\infty B_i^k(x) = 1$ for all $x$.\label{property2}
+  \end{enumerate}
+\end{remark}\
+
+\begin{lemma}\label{derBspline}
+  The derivatives of B-spline basis functions are calculated as follows
+  \begin{equation}
+    \frac{\df}{\df x} B_i^k(x) = \frac{k}{t_{i+k}-t_i}B_i^{k-1}(x) - \frac{k}{t_{i+k+1}-t_{i+1}}B_{i+1}^{k-1}(x)\label{DerBspline}
+  \end{equation}
+  for $k\geq 2$. The equation holds for $k=1$ in all $x$ except $t_i,\,t_{i+1},\,t_{i+2}$.
+  Furthermore, for $k\geq 1$, the basis B-splines $B_i^k$ belong to $C^{k-1}$.
+\end{lemma}\
+\textbf{Proof}. For convenience, let 
+\[
+  \alpha_i^k = \frac{x-t_i}{t_{i+k}-t_{i}} \quad\mbox{and}\quad \beta_i^k = \frac{\df}{\df x} \alpha_i^k = \frac{1}{t_{i+k}-t_{i}},
+\]
+thus
+\[
+  1-\alpha_{i+1}^k = \frac{t_{i+1}-x}{t_{i+k+1}-t_{i+1}} \quad\mbox{and}\quad -\beta_{i+1}^k = \frac{\df}{\df x} (1-\alpha_{i+1}^k) = -\frac{1}{t_{i+k+1}-t_{i+1}}.
+\]
+
+Let $k=1$ and assume $x\neq t_i,\,t_{i+1},\,t_{i+2}$. We find that
+
+\begin{align}
+  \frac{\df}{\df x} B_i^1(x) &= \frac{\df}{\df x} \left(1_{[t_i,t_{i+1})}(x) \alpha_i^1 + 1_{[t_{i+1},t_{i+2})}(x) (1-\alpha_{i+1}^1)\right)\\
+  &= 1_{[t_i,t_{i+1})}(x) \frac{1}{t_{i+1}-t_{i}} - 1_{[t_{i+1},t_{i+2})}(x) \frac{1}{t_{i+2}-t_{i+1}},\\
+  &= \frac{1}{t_{i+1}-t_{i}}B_i^0(x) - \frac{1}{t_{i+2}-t_{i+1}} B_{i+1}^0(x),
+\end{align}
+
+which exactly resembles the formula \eqref{DerBspline} for $k=1$.\\
+
+Now let $k=2$, by using the recursive defintion of B-splines \eqref{recurDef} twice, we get
+\begin{align}
+  B_i^2 &= \alpha_i^2(\alpha_i^1 B_i^0 + (1-\alpha_{i+1}^1)B_{i+1}^0) + (1-\alpha_{i+1}^2)(\alpha_{i+1}^1B_{i+1}^0 + (1-\alpha_{i+2})B_{i+2}^0)\\
+  &= \alpha_i^2\alpha_i^1B_i^0 + [\alpha_i^2(1-\alpha_{i+1}^1) + (1-\alpha_{i+1}^2)\alpha_{i+1}^1]B_{i+1}^0 + (1-\alpha_{i+1}^2)(1-\alpha_{i+2}^1)B_{i+2}^0
+\end{align}
+Finding the derivative of the terms independently gives
+\begin{align}
+  &\frac{\df}{\df x} (\alpha_i^2\alpha_i^1B_i^0) = (\beta_i^2\alpha_i^1 + \alpha_i^2\beta_i^1)B_i^0\\
+  &= \left(\frac{x-t_i}{(t_{i+2}-t_i)(t_{i+1}-t_i)} + \frac{x-t_i}{(t_{i+2}-t_i)(t_{i+1}-t_i)}\right)B_i^0 = \left(\frac{2(x-t_i)}{(t_{i+2}-t_i)(t_{i+1}-t_i)}\right)B_i^0\\
+  & = \frac{2}{t_{i+2}-t_i}B_i^1
+\end{align}
+for $x\in [t_i,t_{i+1})$, 
+\begin{align}
+  &\frac{\df}{\df x} ([\alpha_i^2(1-\alpha_{i+1}^1) + (1-\alpha_{i+1}^2)\alpha_{i+1}^1]B_{i+1}^0)\\
+  &= [\beta_i^2(1-\alpha_{i+1}^1) - \alpha_i^2\beta_{i+1}^1 - \beta_{i+1}^2\alpha_{i+1}^1 + (1-\alpha_{i+1}^2)\beta_{i+1}^1]B_{i+1}^0\\
+  &= \left(\frac{t_{i+2}-x}{(t_{i+2}-t_i)(t_{i+2}-t_{i+1})}-\frac{x-t_i}{(t_{i+2}-t_i)(t_{i+2}-t_{i+1})} - \frac{x-t_{i+1}}{(t_{i+3}-t_{i+1})(t_{i+2}-t_{i+1})}\right.\\
+  &\left.+ \frac{t_{i+3}-x}{(t_{i+3}-t_{i+1})(t_{i+2}-t_{i+1})}\right)B_{i+1}^0\\ 
+  &= \frac{t_{i+2}-2x}{(t_{i+2}-t_i)(t_{i+2}-t_{i+1})}-\frac{2x-t_{i+1}}{(t_{i+3}-t_{i+1})(t_{i+2}-t_{i+1})} + \frac{t_{i+2}t_{i+3}-t_it_{i+1}}{(t_{i+2}-t_i)(t_{i+2}-t_{i+1})(t_{i+3}-t_{i+1})}\\
+  &= \frac{t_{i+2}-2x}{(t_{i+2}-t_i)(t_{i+2}-t_{i+1})}-\frac{2x-t_{i+1}}{(t_{i+3}-t_{i+1})(t_{i+2}-t_{i+1})} + \frac{t_{i+2}(t_{i+3}-t_{i+1}) + t_{i+1}(t_{i+2}-t_i)}{(t_{i+2}-t_i)(t_{i+2}-t_{i+1})(t_{i+3}-t_{i+1})}\\
+  &= \frac{2(t_{i+2}-x)}{(t_{i+2}-t_i)(t_{i+2}-t_{i+1})}-\frac{2(x-t_{i+1})}{(t_{i+3}-t_{i+1})(t_{i+2}-t_{i+1})} = \frac{2}{t_{i+2}-t_i} B_i^1 - \frac{2}{t_{i+3}-t_{i+1}} B_{i+1}^1 
+\end{align}
+for $x\in [t_{i+1},t_{i+2})$ and
+\begin{align}
+  &\frac{\df}{\df x} ((1-\alpha_{i+1}^2)(1-\alpha_{i+2}^1))B_{i+2}^0 = (-\beta_{i+1}^2(1-\alpha_{i+2}^1) -(1-\alpha_{i+1}^2)\beta_{i+2}^1)B_{i+2}^0\\
+  &= - \frac{2(t_{i+3}-x)}{(t_{i+3}-t_{i+1})(t_{i+3}-t_{i+2})} = -\frac{2}{t_{i+3}-t_{i+1}}B_{i+1}^1
+\end{align}
+for $x\in [t_{i+2},t_{i+3})$. Since $B_i^1$ is clearly continuous, $B_i^2$ is $C^{1}$.\\
+
+Now assume that \eqref{DerBspline} holds for $k$ and that $B_i^k$ is $C^{k-1}$. Then 
+\begin{align}
+  \frac{\df}{\df x} B_i^{k+1} &= \frac{\df}{\df x} \left(\alpha_i^{k+1} B_i^k + \alpha_{i+1}^{k+1}B_{i+1}^k\right)\\
+  &= \beta_i^{k+1} B_i^k + \alpha_i^{k+1} \frac{\df}{\df x}B_i^k + \beta_{i+1}^{k+1} B_{i+1}^k + (1-\alpha_{i+1}^{k+1}) \frac{\df}{\df x}B_{i+1}^1\\
+  \intertext{From the induction hypothesis, we have}
+  \frac{\df}{\df x} B_i^{k+1} &= \alpha_i^{k+1}(k\beta_i^{k}B_i^{k-1} - k\beta_{i+1}^{k}B_{i+1}^{k-1}) + (1-\alpha_{i+1}^{k+1})(k\beta_{i+1}^{k}B_{i+1}^{k-1} - k\beta_{i+1}^k B_{i+1}^{k-1})\\
+  &+ \beta_i^{k+1}B_i^k - \beta_{i+1}^{k+1}B_{i+1}^k.\\
+  \intertext{By rearranging, we optain}
+  \frac{\df}{\df x} B_i^{k+1} &= \beta_i^{k+1} B_i^k - \beta_{i+1}^{k+1}B_{i+1}^k + k\alpha_i^{k+1}\beta_i^kB_i^{k-1} - k\alpha_i^{k+1}\beta_{i+1}^kB_{i+1}^{k-1}\\
+  &+ k(1-\alpha_{i+1}^{k+1})\beta_{i+1}^kB_{i+1}^{k-1} - k(1-\alpha_{i+1}^{k+1})\beta_{i+1}^kB_{i+{k+1}}^{k-1}\\
+  \intertext{Now notice that $\alpha_i^{k+1}\beta_i^{k} = \alpha_i^{k}\beta_i^{k+1}$ and $(1-\alpha_i^{k+1})\beta_{i+1}^{k} = (1-\alpha_{i+1}^{k})\beta_{i}^{k+1}$, thus}
+  \frac{\df}{\df x} B_i^{k+1} &= \beta_i^{k+1} B_i^k - \beta_{i+1}^{k+1}B_{i+1}^k + k(\alpha_i^k\beta_i^{k+1}B_i^{k-1} + (1-\alpha_{i+1}^k)\beta_{i}^{k+1}B_{i+1}^{k-1})\\
+  &- k(\alpha_{i+1}^k\beta_{i+1}^{k+1}B_{i+1}^{k-1} + (1-\alpha_{i+1}^k)\beta_{i+2}^{k+1}B_{i+2}^{k-1})\\
+  \intertext{and the recursive definition yields}
+  \frac{\df}{\df x} B_i^{k+1} &= \beta_i^{k+1} B_i^k - \beta_{i+1}^{k+1}B_{i+1}^k + \beta_{i}^{k+1}B_i^k - \beta_{i+1}^{k+1} B_{i+1}^k\\
+  &= (k+1)\beta_{i}^{k+1}B_i^k - (k+1)\beta_{i+1}^{k+1} B_{i+1}^k.
+\end{align}
+By induction the formula \eqref{DerBspline} is proven. Furthermore, since $B_i^k$ was assumed to be $C^{k-1}$, we can conclude that $B_i^{k+1}$ is $C^k$.\hfill\qed\\
+
+\begin{lemma}\label{intBspline}
+The integral of B-splines are given by
+\begin{equation}
+\int_{-\infty}^x = \frac{t_{i+k+1}-t_i}{k+1} \sum_{j=i}^\infty B_j^{k+1}(x)
+\end{equation}
+\end{lemma}
+\textbf{Proof.} From lemma \ref{derBspline} we optain the following formula
+\begin{equation}
+  \frac{\df}{\df x} \sum_{i=-\infty}^\infty c_i B_i^k(x) = k\sum_{i=-\infty}^\infty \frac{c_i-c_{i-1}}{t_{i+k}-t_i}B_i^{k-1}, \quad k\geq 2.\label{IntBspline}
+\end{equation}
+Let 
+\[
+  c_j = \begin{cases}0 & \mbox{ if } j<i\\ 1 & \mbox{ if } j\geq i.\end{cases}
+\]
+Taking the derivative on both sides of \eqref{IntBspline} and using the formula statet above yields the following identity
+\begin{equation}
+B_i^k(x) = \frac{t_{i+k+1}-t_{i}}{k+1}(k+1)\frac{1}{t_{i+k+1}-t_{i}}B_i^k(x).
+\end{equation}
+Thus \eqref{IntBspline} holds, by noting that both sides reduce to 0 when $x = t_i$. \hfill\qed\\
+
+\begin{proposition}\label{PWBspline}
+A uniform B-spline with $t_{j+1}-t_j = 1$ for all knots is a Parzen window.
+\end{proposition}
+\textbf{Proof}. From lemma \ref{intBspline}, we know that the derivative of a basis B-spline function is given by \eqref{IntBspline}. Since the distance between the knots is 1, we have that $t_{i+k+1}-t_i = k+1$, thus the integral is just the sum over B-spline functions. The sum of all B-splines equals 1 as statet in property \ref{property2}.\\
+
+\section{Theorems and lemmas}
+
+\begin{lemma}\label{DiffLemma}
+ Let $\emptyset \neq (a,b)\subset\R$ be a non-degenerate open interval and $u:(a,b)\times X\to \R$ be a function satisfying
+\begin{enumerate}
+  \item $x\mapsto u(t,x)$ is integrable for every fixed $t\in(a,b)$.
+  \item $t\mapsto u(t,x)$ is differentiable for every fixed $x\in X$
+  \item $\abs{\frac{\partial}{\partial t} u(t,x)}\leq w(x)$ for all $(t,x)\in (a,b)\times X$, where $w$ is an integrable function over $X$.
+\end{enumerate}
+
+Then the function 
+
+\begin{equation}
+  t\mapsto v(t):=\int u(t,x) \df x
+\end{equation}
+
+is differentiable and its derivative is
+
+\begin{equation}
+  \frac{\partial}{\partial t} v(t) = \int \partial u(t,x) \df x
+\end{equation}
+\end{lemma}
+\textbf{Proof} This lemma is proven in \cite[p.~92]{schilling.11}, theorem 11.5.\\
+
+%\begin{lemma}
+%Let $\mathcal{X}$ denote a set, $\mathbb{E}$ a $\sigma$-algebra on $\mathcal{X}$ and $\mu$ a measure on $\mathbb{E}$.\\
+%Let $(\mathcal{X},\mathbb{E},\mu)$ be a measure space, and let $f$ be a measurable function on $(\mathcal{X},\mathbb{E})$ wrt. the measure $\mu$. The set function $\nu: \mathbb{E} \to [0,\infty]$ defined by 
+%\begin{equation}
+%\nu(A) = \int_A f \df \mu \quad \mbox{for } A\in \mathbb{E}
+%\end{equation}
+%is a measure on $(\mathcal{X},\mathbb{E})$.
+%\end{lemma}
+%\textbf{Proof} This lemma is proven in \cite[p.~228]{hansen.09}, lemma 11.1.

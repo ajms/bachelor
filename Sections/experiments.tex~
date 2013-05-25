@@ -1,0 +1,358 @@
+\section{Experiments}\label{section:experiments}
+
+\subsection{Setup of the experiments}
+\begin{figure}[h!]
+        \centering
+        \begin{subfigure}[b]{0.24\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{figures/I1init.eps}
+                \subcaption{Final fig. \ref{I1}}\label{I1init}
+        \end{subfigure}%
+        ~ %add desired spacing between images, e. g. ~, \quad, \qquad etc.
+          %(or a blank line to force the subfigure onto a new line)
+        \begin{subfigure}[b]{0.24\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{figures/I2init.eps}
+                \subcaption{Final fig. \ref{I2}}\label{I2init}
+        \end{subfigure}
+        ~
+        \begin{subfigure}[b]{0.24\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{figures/I3init.eps}
+                \subcaption{Final fig. \ref{I3}, \ref{I4}}\label{I3init}
+        \end{subfigure}
+        \begin{subfigure}[b]{0.24\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{figures/I5init.eps}
+                \subcaption{Final fig. \ref{I5}}\label{I5init}
+        \end{subfigure}
+        \caption{Initializations of test images. Final fig. referes to the figure of the final segmentation.}
+\end{figure}
+
+The two methods Chan Vese Levelset (CVL) and Ordeless Levelsets (OL) are compared by segmenting four syntetic images and one real image, a slice from a MR-scanning. The syntetic images cover different properties of image segmentation.\\
+The efficiency of the methods is measured by the time consumption and the number of iterations. The quality of the segmentation is measured by calculating the deviation of the final segmentation and comparing it to the images as they are constructed, such that 
+
+\begin{equation}
+  Deviation := \frac{\sum_{(x,y)\in\Omega}\abs{I_{\text{ref}}(x,y)-1_{[0,\infty)}(\phi(x,y))}}{\abs{\Omega}},
+\end{equation}
+
+where $I_{\text{ref}}$ is the reference image defined as
+
+\begin{equation}
+  I_{\text{ref}}(x,y) = \begin{cases}
+    1 & \mbox{ if } (x,y)\in \omega\\
+    0 & \mbox{ if } (x,y)\in \Omega\backslash\overline{\omega}.
+  \end{cases}
+\end{equation}
+
+Furthermore the quality of the segmentation is evaluated visually, in particular for the non-syntetic images.\\
+The convergence of the methods is investigated by two plots over the iteration number; the value of functional $F$ and the difference of $\phi^{n+1}$ and $\phi^n$ measured using the euclidian norm $||\cdot||_2$, where $n$ denotes the iteration.\\
+Accordingly $\abs{F^{n+1}-F^n}<k$ and $||\phi^{n+1}-\phi^{n}||_2<l$ are also chosen as convergence criterion, where the constants $k,l$ are found empirically from the convergence plots. It is hard to find convergence criteria in general, since the differences in $\phi$ and $F$ are highly dependent on the image. Though the range of the intensity values, the complexity of the image and the image's dimensions all influence the scale of $F$ and $\phi$.\\
+In order to investigate the stability of the respective methods, one syntetic image segmentented using 3 different initializations and the final segmentation is compared.\\
+
+For CVL, the step sizes are $h=1$ and $\Delta t=0.1$. The default parameters for the weightening of the segements are $\lambda_1,\,\lambda_2 = 1$ and the regularizations $\mu = 0.1\cdot 255^2$ and $\nu = 0$.\\
+In the OL method, the default stepsize for the descent direction is $\gamma = 10$. The default parameters for the weightening of the segements are $\lambda_1,\,\lambda_2 = 1$ as before, but the default values for the regularizations are chosen to be $\mu=0$, $\nu=0$ and the image is smoothened by a Gaussian kernel with $\sigma = 1$. \\
+The difference in the regularization is due to the irregularities in images. In CVLs method, the length regularization is used to reduce the influence of noise, while this is handled by the smoothing in the Locally Orderless method. This is elaborated in the discussion of the segmentationen.\\
+Additionally, one might notice the high value of $\mu$ in CVLs Levelset. Since we solve large equation systems in the method, it is convenient to use the intensity values in $[0,255]$ to prevent the matrix entries from getting too small. This is not necessary in the Locally Ordeless method, thus the intensity values are in $[0,1]$. To ease the comparison of the figures, the CVL-images are normalized in the plots.\\
+To ensure faster convergence of the OL-method, the levelset is normalized before the first iteration such that $\phi\in [-1,1]$. The choice of a cubic B-spline means that only the values in $\{-1,0,1,2\}$ can switch bins, thus normalizing ensures that any point in $\Omega$ may switch segment in the first iteration. The levelset values also are kept correspondingly lower, though the levelset evolves easier.
+
+\subsection{Results of the experiments}
+
+The tables show the results of the segmentations. The parameters in the table are the ones that defer from the default values.\\
+
+\begin{tabular}{l|l|c|l|l|c}
+  \multicolumn{6}{l}{\textbf{Locally Ordeless Levelsets}}\label{OLtable}\\[0.2cm]
+  Image           & Time  & Deviation & Initial contour $\phi_0$       & Parameters                                   & Iterations\\\hline
+  Fig \ref{I1} & 0.40s & 0.19      & $30^2 = (x-50)^2 + (y-50)^2$    &                                              & 12\\
+  Fig \ref{I2} & 0.27s & 0.06      & $30^2 = (x-50)^2 + (y-50)^2$    &                                              & 8\\
+  Fig \ref{I3}.1 & 0.17s & 0.60      & $20^2 = (x-50)^2 + (y-50)^2$    &                                              & 5\\
+  Fig \ref{I3}.2 & 0.59s & 1.85      & $20^2 = (x-50)^2 + (y-50)^2$    & $\lambda_1 = 3$, $\sigma = 3$                & 18\\
+  Fig \ref{I5} & 0.82s & -         & $50^2 = (x-128)^2 + (y-128)^2$  & $\gamma = 100$, $\nu = 50$, $\sigma \to 0$   & 4\\
+\end{tabular}
+
+\begin{tabular}{l|l|c|l|l|c}
+  \multicolumn{6}{l}{\textbf{CVL Levelset}}\label{CVLtable}\\[0.2cm]
+  Image          & Time  & Deviation & Initial contour $\phi_0$      & Parameters                                   & Iterations\\\hline
+  Fig \ref{I1} & 1.86s & 0.10      & $30^2 = (x-50)^2 + (y-50)^2$   &                                              & 17\\ % dphi < 40, dF = 2*10^7
+  Fig \ref{I2} & 3.81s & 0.03      & $30^2 = (x-50)^2 + (y-50)^2$   &                                              & 38\\ % dphi < 50, dF = 2*10^7
+  Fig \ref{I3}.1 & 0.80s & 0.00      & $20^2 = (x-50)^2 + (y-50)^2$   & $\mu=0$                                      & 27\\ % dphi < 60, dF = 2*10^7
+  Fig \ref{I3}.2 & 8.58s & 1.08      & $20^2 = (x-50)^2 + (y-50)^2$   & $\mu=0.4\cdot 255^2$                         & 68\\ % dphi < 30, dF = 2*10^7 
+  Fig \ref{I5} & 3.56s & -         & $50^2 = (x-128)^2 + (y-128)^2$ & $\mu=0.01\cdot 255^2$, $\lambda_1=1.5$       & 10\\ %dphi < 2000, dF < 4*10^11
+\end{tabular}\\
+
+\begin{figure}[h!]
+        \centering
+        \begin{subfigure}[b]{0.33\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{figures/I1seg.eps}
+                \caption{Locally Orderless segmentation}
+        \end{subfigure}%
+        ~ %add desired spacing between images, e. g. ~, \quad, \qquad etc.
+          %(or a blank line to force the subfigure onto a new line)
+        \begin{subfigure}[b]{0.33\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{figures/I1segcv.eps}
+                \caption{CVLs segmentation}
+        \end{subfigure}
+        \caption{Final segmentation of figure \ref{I1init}. Dimensions: $100\times 100$.}\label{I1}
+\end{figure}
+
+\begin{figure}[h!]
+        \centering
+        \begin{subfigure}[b]{0.24\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{figures/I1con.eps}
+                \caption{OL: $F$}
+        \end{subfigure}%
+        ~ %add desired spacing between images, e. g. ~, \quad, \qquad etc.
+          %(or a blank line to force the subfigure onto a new line)
+        \begin{subfigure}[b]{0.24\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{figures/I1con2.eps}
+                \caption{OL: $||\phi^{n+1} - \phi^n||_2$}
+        \end{subfigure}
+        ~
+        \begin{subfigure}[b]{0.24\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{figures/I1concv.eps}
+                \caption{CVL: $F$}
+        \end{subfigure}
+        \begin{subfigure}[b]{0.24\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{figures/I1con2cv.eps}
+                \caption{CVL: $||\phi^{n+1} - \phi^n||_2$}
+        \end{subfigure}
+        \caption{Convergence plots of \ref{I1}}\label{I1con}
+\end{figure}
+
+
+The first syntetic image (figure \ref{I1}) is generated to test the segmentation of different shapes. Therefore the image is a combination of a square and a cicle in one segment. Both final segmentations are almost identical and convergence is achieved rather quickly. This is caused by a ``good'' guess on the initial segmentation and the simple structure of the image.\\
+
+\begin{figure}[h!]
+        \centering
+        \begin{subfigure}[b]{0.33\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{figures/I2seg.eps}
+                \caption{Locally Orderless segmentation}
+        \end{subfigure}%
+        ~ %add desired spacing between images, e. g. ~, \quad, \qquad etc.
+          %(or a blank line to force the subfigure onto a new line)
+        \begin{subfigure}[b]{0.33\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{figures/I2segcv.eps}
+                \caption{CVLs segmentation}
+        \end{subfigure}
+        \caption{Final segmentation of figure \ref{I2init}. Dimensions: $100\times 100$.}\label{I2}
+\end{figure}
+
+\begin{figure}[h!]
+        \centering
+        \begin{subfigure}[b]{0.24\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{figures/I2con.eps}
+                \caption{OL: $F$}
+        \end{subfigure}%
+        ~ %add desired spacing between images, e. g. ~, \quad, \qquad etc.
+          %(or a blank line to force the subfigure onto a new line)
+        \begin{subfigure}[b]{0.24\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{figures/I2con2.eps}
+                \caption{OL: $||\phi^{n+1} - \phi^n||_2$}
+        \end{subfigure}
+        ~
+        \begin{subfigure}[b]{0.24\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{figures/I2concv.eps}
+                \caption{CVL: $F$}
+        \end{subfigure}
+        \begin{subfigure}[b]{0.24\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{figures/I2con2cv.eps}
+                \caption{CVL: $||\phi^{n+1} - \phi^n||_2$}
+        \end{subfigure}
+        \caption{Convergence plots of \ref{I2}}\label{I2con}
+\end{figure}
+
+
+Figure \ref{I2} shows two disjoint squares of which one touches the boundary. Thus we are interested in investigating the segmentation of disjoint inner segments and the stability on the boundary. Notice that the OL-segmentation rounds of the corner of one square at the boundary while the CVL-segmentation is more stable on this matter. This is caused by the smoothening of the image in the OL-method. Segmentation of the image with less/no smothening will result in lots of small artefacts in the inner segment, since the OL-method handles noise using the smoothening.\\
+
+\begin{figure}[h!]
+        \centering
+        \begin{subfigure}[b]{0.33\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{figures/I3seg.eps}
+                \caption{Locally Orderless segmentation}
+        \end{subfigure}%
+        ~ %add desired spacing between images, e. g. ~, \quad, \qquad etc.
+          %(or a blank line to force the subfigure onto a new line)
+        \begin{subfigure}[b]{0.33\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{figures/I3segcv.eps}
+                \caption{CVLs segmentation}
+        \end{subfigure}
+        \caption{Tight final segmentation of figure \ref{I3init}. Dimensions: $100\times 100$.}\label{I3}
+\end{figure}
+
+\begin{figure}[h!]
+        \centering
+        \begin{subfigure}[b]{0.24\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{figures/I3con.eps}
+                \caption{OL: $F$}
+        \end{subfigure}%
+        ~ %add desired spacing between images, e. g. ~, \quad, \qquad etc.
+          %(or a blank line to force the subfigure onto a new line)
+        \begin{subfigure}[b]{0.24\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{figures/I3con2.eps}
+                \caption{OL: $||\phi^{n+1} - \phi^n||_2$}
+        \end{subfigure}
+        ~
+        \begin{subfigure}[b]{0.24\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{figures/I3concv.eps}
+                \caption{CVL: $F$}
+        \end{subfigure}
+        \begin{subfigure}[b]{0.24\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{figures/I3con2cv.eps}
+                \caption{CVL: $||\phi^{n+1} - \phi^n||_2$}
+        \end{subfigure}
+        \caption{Convergence plots of \ref{I3}}\label{I3con}
+\end{figure}
+
+The third image is segmented in two ways, as disjoint segments and as one segmentæ. This is used to test the ability of the methods to segment in different ways by carefully choosing right parameters. The first results (figure \ref{I3}) show exactly the same segmentation with a deviation of $0.00$ for both methods. Hence the method result in exactly the same segmentation as the image is constructed. This could be expected, since there is no noise in the image, thus no artifacts disturbing the segmentation. In the figure \ref{I4}, we see that both methods also can segment close elements as one segment. The length-regularization is used in the CVL-method to achieve this, while choosing a high value of $\sigma$ and weightening the inner segment does the job for the OL-method. The large amount of smoothening in the OL-method causes that the segmentation is not as tight as in the CVL-method. Allthough the CVL-method has problems achieving the same result as the OL-method. In the convergence plots, the complexity and non-convexity of the CVL-method is also visualized, since the plot of the functional $F$ decreases and increases in steps. This is probably caused by local minima.\\
+
+\begin{figure}[h!]
+        \centering
+        \begin{subfigure}[b]{0.33\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{figures/I4seg.eps}
+                \caption{Locally Orderless segmentation}
+        \end{subfigure}%
+        ~ %add desired spacing between images, e. g. ~, \quad, \qquad etc.
+          %(or a blank line to force the subfigure onto a new line)
+        \begin{subfigure}[b]{0.33\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{figures/I4segcv.eps}
+                \caption{CVLs segmentation}
+        \end{subfigure}
+        \caption{Final segmentation of figure \ref{I3init} as one segment. Dimensions: $100\times 100$.}\label{I4}
+\end{figure}
+
+\begin{figure}[h!]
+        \centering
+        \begin{subfigure}[b]{0.24\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{figures/I4con.eps}
+                \caption{OL: $F$}
+        \end{subfigure}%
+        ~ %add desired spacing between images, e. g. ~, \quad, \qquad etc.
+          %(or a blank line to force the subfigure onto a new line)
+        \begin{subfigure}[b]{0.24\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{figures/I4con2.eps}
+                \caption{OL: $||\phi^{n+1} - \phi^n||_2$}
+        \end{subfigure}
+        ~
+        \begin{subfigure}[b]{0.24\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{figures/I4concv.eps}
+                \caption{CVL: $F$}
+        \end{subfigure}
+        \begin{subfigure}[b]{0.24\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{figures/I4con2cv.eps}
+                \caption{CVL: $||\phi^{n+1} - \phi^n||_2$}
+        \end{subfigure}
+        \caption{Convergence plots of \ref{I4}}\label{I4con}
+\end{figure}
+
+
+\begin{figure}[h!]
+        \centering
+        \begin{subfigure}[b]{0.33\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{figures/I5seg.eps}
+                \caption{Locally Orderless segmentation}
+        \end{subfigure}%
+        ~ %add desired spacing between images, e. g. ~, \quad, \qquad etc.
+          %(or a blank line to force the subfigure onto a new line)
+        \begin{subfigure}[b]{0.33\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{figures/I5segcv.eps}
+                \caption{CVLs segmentation}
+        \end{subfigure}
+        \caption{Tight final segmentation of figure \ref{I5init}. Dimensions: $256\times 256$.}\label{I5}
+\end{figure}
+
+\begin{figure}[h!]
+        \centering
+        \begin{subfigure}[b]{0.24\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{figures/I5con.eps}
+                \caption{OL: $F$}
+        \end{subfigure}%
+        ~ %add desired spacing between images, e. g. ~, \quad, \qquad etc.
+          %(or a blank line to force the subfigure onto a new line)
+        \begin{subfigure}[b]{0.24\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{figures/I5con2.eps}
+                \caption{OL: $||\phi^{n+1} - \phi^n||_2$}
+        \end{subfigure}
+        ~
+        \begin{subfigure}[b]{0.24\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{figures/I5concv.eps}
+                \caption{CVL: $F$}
+        \end{subfigure}
+        \begin{subfigure}[b]{0.24\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{figures/I5con2cv.eps}
+                \caption{CVL: $||\phi^{n+1} - \phi^n||_2$}
+        \end{subfigure}
+        \caption{Convergence plots of \ref{I5}}\label{I5con}
+\end{figure}
+
+
+Finally the segmentation of a brain in figure \ref{I5} yields almost identical segmentations for both methods. In order to optain a tight segmentation of the brain, different parameters are ajusted in the two methods. For the OL-method, $\nu$ is set rather high to allow small segments to appear. The image of the brain is smooth on beforehand, so no smoothening is used in the segmentation. Furthermore $\gamma$ is set to be 100, since this increases the convergence speed significantly. In the CVL-method, a small value is chosen for the length-regularization, as we are not interested to prevent small segments from growing. Additionally the inner segment is weightened to ensure a tighter segmentation. This image also has the lowest number of iterations in the whole set of experiments. This is due to the small differences in intensity values and no noise, hence the levelset function does not need as many iterations to match the image.\\
+
+\begin{figure}[h!]
+        \centering
+        \begin{subfigure}[b]{0.32\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{figures/I6init.eps}
+                \caption{Init: $15^2 = (x-20)^2+(y-80)^2$}\label{I1initA}
+        \end{subfigure}
+        ~
+        \begin{subfigure}[b]{0.32\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{figures/I7init.eps}
+                \caption{Init: $10^2 = (x-80)^2+(y-80)^2$}\label{I1initB}
+        \end{subfigure}
+        ~
+        \begin{subfigure}[b]{0.32\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{figures/I8init.eps}
+                \caption{Init: $30^2 = (x-50)^2+(y-0)^2$}\label{I1initC}
+        \end{subfigure}
+        \caption{The 3 different initializations to test the stability. Init denotes the initial curve, $\phi_0$.}\label{I1init}
+\end{figure}
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.4\textwidth]{figures/I1initphi.eps}
+  \caption{The final levelset of the CVL-segmentation of figure \ref{I1initC}}\label{I1initphi}
+\end{figure}
+
+
+The stability investigation of the methods is performed using the 3 initializations shown in figure \ref{I1init}. Both methods yield small deviations from the reference image, $0.00, 0.00$ and $0.001\%$ for the CVL-method and $0.13, 0.07$ and $0.13$ for the OL-method. But the computation time for the CVL-method increases significantly for initializations in one segment (figures \ref{I1initA}, \ref{I1initC}), where the times are 8.37s and 10.38 respectively. In comparison, figure \ref{I1initB} converges in 3.81s. Furthermore, it is necessary to decrease $\Delta t$ to 0.5 in order to prevent slower convergence times. This results in numerical instability that is visible in the $\phi$-function (figure \ref{I1initphi}) close to the boundary. The OL-method achieves low computation times (0.66s, 00.12, 0.56s) for all initializations.
+
+
+\subsection{General considerations}
+Generally the OL-method acts faster that the CVL-method, this can be seen by comparing the computation times in the result tables. In particular high values of $\mu$, i.e. regularizing for the length of the curve results in significantly higher computation times. This is clear from the formulation of the CVL-method, because the equation system solved in each iteration reduces to a diagonal matrix choosing $\mu=0$. Thus the higher the value of $\mu$ is, the more complicated equation systems have to be solved.\\
+The OL-method is also more stable computing larger images. This can be seen from the brain image (figure \ref{I5}), an $256\times 256$ pixels image. The computation time is not increased particulary in comparison to the first image (figure \ref{I1}) with almost the same number of iterations. This is not the case for the CVL-method, where the computation time is doubled even though the number of iterations is lower. This can also be adressed to the equation systems. CVL use an implicit method, thus one has to solve equation systems of size $M\cdot N\times M\cdot N$, where $M\times N$ is the image size. Conversely, the OL-method is linear wrt. the number of pixels in one timestep.\\
+In the convergence plots of the experiments, one might notice that the value of the functional $F$ increases in the first iterations. This is because the final mean values $c_1$ and $c_2$ of the inner and outer segment have to be found, before the method converges. In the first iteration, the mean values are given by the initial segmentation which possibly is far from the final, converged segmentation. This cannot be seen to same extent on the convergence plots the CVL-method, even though the slope of the first iterations is lower than the one from the following iterations. This might be caused by the primitive approach of subtracting the gradient from the levelset in the OL-method.\\
+The parameter $\gamma$ in the OL-method is used to control the convergence speed. A large value of $\gamma$ yields faster convergence and shows the same convergence plots as small $\gamma$ with larger steps. Though the quality of the segmentation is lower for large $\gamma$, i.e. the boundary of the inner segment is often not that ``clean'' and tight as when choosing small $\gamma$.\\ 
+Furthermore the choice of the parameter $\mu$ in the OL-method does not result in good segmentations. This might be caused by too few bins in the $\phi$-direction and choosing smaller bins prevents the segmentation from converging. But as mentioned for figure \ref{I4}, the same results may be reached by smoothing more and weightening the segments appropriately. One can also consider to choose shape priors in order to optain the same properties as the length regularization.
+
