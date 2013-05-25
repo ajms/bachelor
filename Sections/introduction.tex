@@ -1,8 +1,8 @@
  % For referencing the chapter elsewhere, use \ref{Chapter1} 
 
-\lhead{\cref{chapter:introduction} \emph{Introduction}} % This is for the header on each page - perhaps a shortened title
-\chapter{Introduction}\label{chapter:introduction}
-
+\lhead{\cref{chapter:preface} \emph{Introduction}} % This is for the header on each page - perhaps a shortened title
+\chapter{Preface}\label{chapter:preface}
+\section{Introduction}
 Image segmentation is the process of partitioning an image into sets of pixels, so called segments, that share a certain property. The goal is to optain a simple representation that is easier to analyse than the original image. Often, the objective is to detect the boundaries of an object in the image to examine it further. This has its applications in medical image analysis, where one might be interested in investigating the structure, shape and size of an organ, given for instance a MRI-scanning.\\
 
 The levelset method is a flexible approach to do image segmentation. The idea is to evolve the contour that seperates the segments in the image. To accomplish this, a signed distance function is used, where the 0'th level curve represents the contour. The levelset function supports the propagation of the curve through the image.\\
@@ -15,3 +15,8 @@ The Orderless Levelset method is developed and formulated and proven to be well 
 
 The verification of the functionality and an investigation of the quality of the OL-method is performed in \cref{chapter:experiments}. This is done by constructing comparative experiments of the OL- and the CVL-method, covering a spectrum of different properties of the levelset methods. Moreover the computation times of CVL and OL are compared and the convergence is examined.\\
 \cref{chapter:defthm} contains definitions and theorems necessary for derivations throughout the project. Finally, the report is concluded with an outlook on further work.
+
+\section{Previous Work}
+Levelset: Mumford-Shaw, Osher.\\
+Locally Ordeless Images: Koenderink.\\
+Locally Ordeless Registration: Darkner.

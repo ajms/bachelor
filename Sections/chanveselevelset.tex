@@ -3,7 +3,7 @@
 \lhead{\cref{chapter:CVL} \emph{Chan Vese Levelset method}} % This is for the header on each page - perhaps a shortened title
 \chapter{Chan Vese Levelset method}\label{chapter:CVL}
 \section{Formulation}
-Let $\Omega\in \R^2$ be the image domain and let $\partial\Omega$ be the boundary. Furthermore, let $I:\Omega\to \Gamma$ be an image, where $\Gamma\subset\R$ are the intensity values $\Im(f)$.\\
+Let $\Omega\in \R^2$ be the image domain and let $\partial\Omega$ be the boundary. Furthermore, let $I:\Omega\to \Gamma$ be an image, where $\Gamma\subset\R$ are the intensity values.\\
 We define a curve $C$ on $\Omega$ that is evolved using the image $I$ such that the image domain $\Omega$ is segmented into two parts. Let $\omega\subset\Omega$ denote the interior of the curve, hence the inner segment. Conversely, $\Omega\backslash\overline{\omega}$ describes the outer segment. Accordingly $C=\partial\omega$ describes the boundary of the inner segment.\\
 To optain a segmentation of the image $I$ on the domain $\Omega$, a functional of the following form is used:
 
@@ -161,7 +161,7 @@ As boundary condition, \cite{chan.01} poses
 where $\frac{\partial\phi}{\partial \vec{n}}$ denotes the derivative wrt. the external normal vector on the boundary.
 
 
-\section{Numerical Scheme and Implementation of the Chan-Vese Levelset}
+\section{Numerical Scheme of the Chan Vese Levelset}\label{section:numscheme}
 The following $C^\infty(\overline{\Omega})$ regularizations of the heavyside- and dirac function were suggested by \cite{chan.01}. They are visualized in figure \ref{fig:regularizations} for different values of $\epsilon$.
 \begin{figure}
   \centering
@@ -176,22 +176,6 @@ The following $C^\infty(\overline{\Omega})$ regularizations of the heavyside- an
 \end{equation}
 
 Since the functional is non-convex, there might appear several local minima. The discretization should not depend on the initial choice $\phi_0$ which is prevented by choosing regularizations with infinite support. Thus the heavyside and dirac functions act on the entire levelset function instead of just influencing a small neighborhood around the 0'th level curve.\\
-\iffalse
-\begin{figure}
-        \centering
-        \begin{subfigure}[b]{0.5\textwidth}
-                \centering
-                \includegraphics[width=\textwidth]{figures/Hside.eps}
-        \end{subfigure}%
-        ~ %add desired spacing between images, e. g. ~, \quad, \qquad etc.
-          %(or a blank line to force the subfigure onto a new line)
-        \begin{subfigure}[b]{0.5\textwidth}
-                \centering
-                \includegraphics[width=\textwidth]{figures/Dirac.eps}
-        \end{subfigure}
-
-\end{figure}
-\fi
 
 The discretization of $\phi$ is done by an implicit finite difference system. Let $h$ be the space stepsize and let $\Delta t$ be the time stepsize. An $M\times N$ equidistant grid is used, where $(x_i,y_j) = (i\cdot h,j\cdot h)$ are the grid points for $0\leq i \leq M+1$, $0\leq j \leq N+1$. $\phi(t,x,y)$ is approximated by $\phi_{i,j}^n = \phi(n\Delta t, x_i,y_j)$ for $n\in\N$ using $\phi_{i,j}^0 = \phi_0$, the initial levelset as a signed distance function. The boundaries are thus $\phi_{0,j}^n$, $\phi_{M+1,j}^n$, $\phi_{i,0}^n$, $\phi_{i,N+1}$.\\
 
@@ -220,10 +204,10 @@ Note that the absolute gradient in the divergence term is handled by a central a
 In order to solve the implicit difference scheme posed by \cite{chan.01}, the coefficients $A,B,C$ and result vector $b$ are derived from \eqref{ImplMeth}:
 For convenience, let
 
-\begin{align*}
+\begin{equation}
 \zeta_{i,j}^n = \left((\Delta_+^x\phi_{i,j}^n)^2/h^2 + (\Delta_c^y \phi_{i,j}^n)/(2h)^2\right)^{-1/2},\quad
-\eta_{i,j}^n = \left((\Delta_+^y\phi_{i,j}^n)^2/h^2 + (\Delta_c ^x \phi_{i,j}^n)/(2h)^2\right)^{-1/2},
-\end{align*}
+\eta_{i,j}^n = \left((\Delta_+^y\phi_{i,j}^n)^2/h^2 + (\Delta_c ^x \phi_{i,j}^n)/(2h)^2\right)^{-1/2},\label{zetaeta}
+\end{equation}
 
 then
 
@@ -258,13 +242,13 @@ Using forward and backward difference schemes of second order results in the fol
 \end{align*}
 
 Since the scheme is implicit, it is necessary to solve an equation system. In order to take the two dimensions into account, a pentadiagonal matrix $P$ is created as explained in \cite{holm.07}. It is arranged such that the equation system $P\vec{\phi}^{n+1} = b$ is organized as in \eqref{LinSys} yielding
-\[
+\begin{equation}\label{phivec}
 \vec{\phi}^{n+1} = 
 \begin{bmatrix}
   \phi_{1,1}^{n+1} & \phi_{2,1}^{n+1} & \cdots & \phi_{N-1,1}^{n+1} & \phi_{N,1}^{n+1} & \phi_{1,2}^{n+1} & \phi_{2,2}^{n+1} & \cdots 
   & \phi_{N-1,M}^{n+1} & \phi_{N,M}^{n+1}
 \end{bmatrix}^T
-\]
+\end{equation}
 
 The boundary conditions are also added to $P$, such that they appear on the rows, where the boundary is hit.
 
@@ -305,15 +289,3 @@ where $+$ and $-$ denote the positive and the negative part respectively. Thus i
 \begin{equation}
 \psi_{i,j}^{n+1}=\psi_{i,j}^n - \Delta t \;\sign_\epsilon(\phi_{i,j})G(\psi_{i,j}^n).
 \end{equation}\vline
-
-Finally, the algorithm used to minimize $F$ looks as follows.
-
-\begin{lstlisting}
-Initialize %$\phi$% as a signed distance map
-Set n=1
-Repeat until the solution is stationary
-  Compute %$c_1(\phi^n)$% and %$c_2(\phi^n)$%
-  Solve the equation system %$Pv = b$%.
-  Reinitialize (optional)
-  n+=1
-\end{lstlisting}

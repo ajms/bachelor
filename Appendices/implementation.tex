@@ -1,9 +1,44 @@
-% Appendix A
-
-\chapter{Implementations} % Main appendix title
-
-\label{AppendixB} % For referencing this appendix elsewhere, use \ref{AppendixA}
+\chapter{Implementations}\label{AppendixB} % For referencing this appendix elsewhere, use \ref{AppendixA}
 
 \lhead{\ref{AppendixB} \emph{Implementation}} % This is for the header on each page - perhaps a shortened title
+\section{Chan Vese Levelset}
+The CVL-method is implemented in Matlab, utilizing the numerical scheme derived in \sref{section:numscheme}.\\
+The algorithm looks as follows:\\
 
-In order to calculate the convolution, the built-in fast Fourier Transform \texttt{fftn} from matlab is used. Since the Fourier transform assumes our image to be periodic, this might cause problems on the boundary, because smoothing on the boundary is transformed to the other boundary. Since most of the images, we are considering, have a plain background, this does not matter. For calculation of the gaussian scale space, an implementation \texttt{scalen} by Jon Sporring is used.\\
+\begin{lstlisting}
+Input %$M\times N$% image %$I$%, initial contour, parameters %$\Delta t$%, h, %$\lambda_1$%, %$\lambda_2$%, %$\mu$%, %$\nu$%.
+Initialize %$\phi^0$%  as a signed distance map from the initial contour
+Repeat until the solution is stationary
+  Compute the mean values %$c_1(\phi^n)$% and %$c_2(\phi^n)$%.
+  Calculate the matrix entries for %$P$%.
+  Solve the equation system %$P\phi^{n+1} = b$%, where %$\phi^{n+1}$% is as described in %\eqref{phivec}%
+  Calculate boundary values for %$\phi^{n+1}$%.
+  Reinitialize %$\phi^{n+1}$% (optional)
+  n+=1
+Output: 0'th levelcurve of %$\phi$%.
+\end{lstlisting}
+
+The levelset function is initialized from a circle with the \texttt{bwdist}-function.\\
+If the absolute gradient $\zeta_{i,j}, \eta_{i,j}$ \eqref{zetaeta} becomes too small, i.e. the difference between successive values is small, the length-regularization might become unbounded, yielding numerical instability. To prevent this from happening, the absolute gradient is bounded to $1$, hence if the size of $\zeta_{i,j}, \eta_{i,j}$ is smaller than $1$, it is set to be $1$.\\
+Since the matrices $P$ are large ($M\cdot N\times M\cdot N$ for $M\times N$-images) and they only contain entries on 5 diagonals, sparse matrix datastructures are used, yielding significantly faster computations.\\
+The matrix is solved using the efficient iterative solver \texttt{gmres}, because the equation systems are large.
+
+
+\section{Orderless Levelset}
+The OL-method is implemented in Matlab, using the Parzen window and optimization choices from \sref{section:OLopt}.\\
+The algorithm looks as follows:\\
+
+\begin{lstlisting}
+Input: image %$I$%, inital contour, parameters %$\sigma$%, %$\lambda_1$%, %$\lambda_2$%, %$\mu$%, %$\nu$%, %$\gamma$%
+Initialize %$\phi^0$%  as a signed distance map from the initial contour
+Smoothen %$I$% using a gaussian kernel %$G(\cdot,\sigma)$%
+Repeat until solution is stationary
+  for the intensity values %$i$% in the smoothened image:
+    Calculate %$\diff_{\phi_i} F$% using the derivate Parzen window
+  Update %$\phi^{n+1} = \phi^n - \gamma\df F$%
+  n+=1
+Output: 0'th levelcurve of %$\phi$%.
+\end{lstlisting} 
+
+The Gaussian scale space $G$ is calculated using Fourier transformation. For this, the built-in function fast Fourier transform \texttt{fftn} is used and the scale space is calculated by a function \texttt{scalen} by Jon Sporring. The Fourier transform assumes our image to be periodic, this might cause problems on the boundary, because smoothing on the boundary is transformed to the opposite boundary. Since most of the images, we are considering, have a plain background, this does not matter.\\
+When $\mu=0$ - the parameter to control the length regularization, the levelset is normalized before the first iteration such that $\phi\in [-1,1]$. This yields faster convergnece, because the choice of a cubic B-spline means that only the values in $\{-1,0,1,2\}$ can switch bins, thus normalizing ensures that any point in $\Omega$ may switch segment in the first iteration. The levelset values also are kept correspondingly lower, though the levelset evolves easier. Obviously, we cannot do this, when we are interested in regularizing for the contours length, because the 0'th bin would become an area.\\

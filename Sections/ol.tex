@@ -3,20 +3,20 @@
 \lhead{\cref{chapter:OL} \emph{Orderless Levelset}} % This is for the header on each page - perhaps a shortened title
 \chapter{Orderless Levelset}\label{chapter:OL}
 \section{Formulation of Levelset in terms of Locally Orderless Images}\label{section:OLform}
-The energy based functional \eqref{F1} can be formulated in terms of locally orderless images. Let $I:\Omega\to \Gamma$ be the image and let $\phi:\Omega\to\R$ be the levelset function, where $\Omega\subset \R^k$ is the image domain and $\Gamma\subset\R$ are the intensity values $\Im(I)$. Taking those functions into account, we find the joint histogram as in \cite{dar.11}:
+The energy based functional \eqref{F1} can be formulated in terms of Locally Orderless Images. Let $I:\Omega\to \Gamma$ be the image and let $\phi:\Omega\to\R$ be the levelset function, where $\Omega\subset \R^k$ is the image domain and $\Gamma\subset\R$ are the intensity values. Notice that $\Gamma$, the intensity values, is a finite interval. Taking those functions into account, we formulate the joint histogram as in \cite{dar.11}:
 
 \begin{equation}
   h_{I,\phi}(i,j,\vec{x}_0,\alpha,\vec{\beta},\vec{\sigma}) = (P_1(G(\vec{x},\sigma_1)*I(\vec{x})-i,\beta_1)P_2(G(\vec{x},\sigma_2)*\phi(\vec{x})-j,\beta_2))*W(\vec{x}_0,\alpha),
 \end{equation}
 
-with the joint distribution \textbf{This has to be corrected.}
+with the Parzen estimate of the joint density: \textbf{Has to be corrected}.
 
 \begin{equation}
-  p_{I,\phi}(i,j,\vec{x}_0,\alpha,\vec{\beta},\vec{\sigma}) = \frac{h_{I,\phi}(i,j,\vec{x}_0,\alpha,\vec{\beta},\vec{\sigma})}{\int_\Omega h_{I,\phi}(i,j,\vec{x}_0,\alpha,\vec{\beta},\vec{\sigma})\df \vec{x_0}}.
+  \bar{p}_{I,\phi}(i,j,\vec{x}_0,\alpha,\vec{\beta},\vec{\sigma}) = \frac{h_{I,\phi}(i,j,\vec{x}_0,\alpha,\vec{\beta},\vec{\sigma})}{\int_\Omega h_{I,\phi}(i,j,\vec{x}_0,\alpha,\vec{\beta},\vec{\sigma})\df \vec{x_0}}.
 \end{equation}
 
 Thus we use the Locally Orderless Images notion over the levelset function $\phi$ and the image $I$ and combine them to a joint histogram representation. Note that the spatial information of both image and levelset is discarded.\\
-Since the Locally Ordelerless notion has no immediate use in the levelset method. So we introduce the Ordeless Levelset by letting $\alpha\to \infty$, the spatial window $W(\vec{x}_0,\alpha)$ will tend to 1 on the whole $\Omega$-domain. Thus the histogram simplifies to
+The ``Locally Ordelerless'' property has no immediate use in the levelset method. So we introduce the Ordeless Levelset by letting $\alpha\to \infty$, the spatial window $W(\vec{x}_0,\alpha)$ will tend to 1 on the whole $\Omega$-domain. Thus the histogram simplifies to
 
 \begin{equation}
   \begin{split}
@@ -29,24 +29,41 @@ This motivates to formulate \eqref{F1} in the following way:
 
 \begin{equation}
   \begin{split}
-    F(\phi,c_1,c_2) &= \mu \int_{\Gamma}h_{I,\phi}(i,0,\vec{\beta},\vec{\sigma})\df i + \nu\int_{\R_+}\int_{\Gamma}h_{I,\phi}(i,j,\vec{\beta},\vec{\sigma})\df i \df j\\
-    &+ \lambda_1\int_{\R_+} \int_{\Gamma} \abs{i-c_1}^2h_{I,\phi}(i,j,\vec{\beta},\vec{\sigma})\df i\df j\\
-    &+ \lambda_2\int_{\R_-} \int_{\Gamma} \abs{i-c_2}^2h_{I,\phi}(i,j,\vec{\beta},\vec{\sigma})\df i\df j,
+    F(\phi,c_1,c_2) &= \mu \int 1_\Gamma(i) h_{I,\phi}(i,0,\vec{\beta},\vec{\sigma})\df m(i) + \nu\int 1_{\Gamma}(i)1_{R_+}(j) h_{I,\phi}(i,j,\vec{\beta},\vec{\sigma})\df m_2(i,j)\\
+    &+ \lambda_1\int 1_\Gamma(i) 1_{\R_+}(j) \abs{i-c_1}^2h_{I,\phi}(i,j,\vec{\beta},\vec{\sigma})\df m_2(i, j)\\
+    &+ \lambda_2\int 1_\Gamma(i) 1_{\R_-}(j) \abs{i-c_2}^2h_{I,\phi}(i,j,\vec{\beta},\vec{\sigma})\df m_2(i, j),
   \end{split}\label{LOLF}
 \end{equation}
+where $m_2$ is the 2-dimensional Lebesgue measure.\\
+Fix $\vec{\sigma}, \vec{\beta}, c_1, c_2$ and let $(\Gamma\times \R_+,\mathbb{B}^2(\R),m_2(i,j))$ be the $\sigma$-finite measure space on which $f(i,j) = \abs{i-c_1}h_{I,\phi}(i,j,\vec{\sigma},\vec{\beta})$ is defined. The Parzen window is per definition integrable, in particular measurable and $\abs{i-c_1}$ is measurable, since it is continuous. This implies that $f$ is measurable, because $f$ is the product of measurable functions. Since $f$ is positive, we can use Tonellis theorem \eqref{Tonelli}, thus
+\begin{equation}
+  \begin{split}
+    &\int 1_\Gamma(i) 1_{\R_+}(j) \abs{i-c_1}^2h_{I,\phi}(i,j,\vec{\beta},\vec{\sigma})\df m_2(i, j)\\
+    = &\int\int 1_\Gamma(i) 1_{\R_+}(j) \abs{i-c_1}^2h_{I,\phi}(i,j,\vec{\beta},\vec{\sigma})\df m(i) \df m(j).
+  \end{split}
+\end{equation}
+Furthermore, we can bound $\abs{i-c_1}$ by a constant $K$, because $\Gamma$ is assumed to be a bounded interval. This gives
+\begin{equation}
+  \begin{split}
+    &\int\int 1_\Gamma(i) 1_{\R_+}(j) \abs{i-c_1}^2h_{I,\phi}(i,j,\vec{\beta},\vec{\sigma})\df m(i) \df m(j)\\
+    \leq &\int\int 1_\Gamma(i) 1_{\R_+}(j) K h_{I,\phi}(i,j,\vec{\beta},\vec{\sigma})\df m(i) \df m(j) \leq K < \infty,
+  \end{split}
+\end{equation}
+because the Parzen windows integrate to 1 on the whole domain.\\
+Similar arguments hold for the other terms in \eqref{LOLF}, hence $F$ is well defined and finite.\\
 
 To find the values $c_1,c_2$ that minimize $F(\phi,c_1,c_2)$, assume that $\phi$ is fixed. To find the minimum, $\partial F/\partial c_1 =0$ and $\partial^2 F/\partial c_1^2 > 0$. \\
 
 In order to find the derivative wrt. $c_1$, lemma \ref{DiffLemma} is used.\\
-Thus for fixed $c_1$, we require $i\mapsto \int_{\R^+}\abs{i-c_1}^2h_{I,\phi}(i,j,\sigma,\beta)\df j$ to be integrable for every $c_1\in\R$. But this is given, since it is the second central moment around $c_1$ of the histogram $h_I(i,\beta,\sigma) = P_1(G(I\vec{x},\sigma)-i,\beta)$ by interchanging the integrals. Clearly, $j\mapsto \int_\R\abs{i-c_1}^2h_{I,\phi}(i,j,\sigma,\beta)\df i$ is integrable, since the Parzen window $P_2$ is integrable. Furthermore, we have to assume that  $c_1 \mapsto \abs{i-c_1}h_{I,\phi}(i,j,\sigma,\beta)$ is differentiable for every fixed $i,j\in \R$ and the derivate needs to be less or equal an integrable function over the whole domain. But this is clear, since $\abs{i-c_1}^2$ is differentiable and the absolute derivative is itself integrable. Hence
+Thus for fixed $c_1$, we require $(i,j)\mapsto \abs{i-c_1}^2h_{I,\phi}(i,j,\sigma,\beta)$ to be integrable for every $c_1\in\R$. But this is given, by the argument above. Furthermore, we have to assume that  $c_1 \mapsto \abs{i-c_1}h_{I,\phi}(i,j,\sigma,\beta)$ is differentiable for every fixed $i,j\in \R$ and the derivate needs to be less or equal an integrable function over the whole domain. But this is clear, since $\abs{i-c_1}^2$ is differentiable and the absolute derivative is itself integrable. Hence
 
 \begin{equation}
-\begin{split}
-  \frac{\partial F}{\partial c_1} &= \frac{\partial }{\partial c_1} \int_{\R_+}\int_{\Gamma}\abs{i-c_1}^2 h_{I,\phi}(i,j,\vec{\beta},\vec{\sigma}) \df i\df j 
-  = \int_{\R_+}\int_{\Gamma}\frac{\partial }{\partial c_1}\abs{i-c_1}^2 h_{I,\phi}(i,j,\vec{\beta},\vec{\sigma}) \df i\df j \\
-  &= \int_{\R_+} \int_\R-2\abs{i-c_1}\frac{(i-c_1)}{\abs{i-c_1}} h_{I,\phi}(i,j,\vec{\beta},\vec{\sigma}) \df i\df j 
-  = \int_{\R_+} \int_\R-2(i-c_1) h_{I,\phi}(i,j,\vec{\beta},\vec{\sigma}) \df i\df j = 0.
-\end{split}
+  \begin{split}
+    \frac{\partial F}{\partial c_1} &= \frac{\partial }{\partial c_1} \int_{\R_+}\int_{\Gamma}\abs{i-c_1}^2 h_{I,\phi}(i,j,\vec{\beta},\vec{\sigma}) \df i\df j 
+    = \int_{\R_+}\int_{\Gamma}\frac{\partial }{\partial c_1}\abs{i-c_1}^2 h_{I,\phi}(i,j,\vec{\beta},\vec{\sigma}) \df i\df j \\
+    &= \int_{\R_+} \int_\R-2\abs{i-c_1}\frac{(i-c_1)}{\abs{i-c_1}} h_{I,\phi}(i,j,\vec{\beta},\vec{\sigma}) \df i\df j 
+    = \int_{\R_+} \int_\R-2(i-c_1) h_{I,\phi}(i,j,\vec{\beta},\vec{\sigma}) \df i\df j = 0.
+  \end{split}
 \end{equation}
 
 This means that the length term is formulated by integrating the histogram over the intensity values $i$ and only considering the 0'th levelcurve by picking $j=0$. The area term is integrated over all intensity values $i$, but only over the positive levelset values, while the similarity measure terms are constructed by choosing the positive and negative levelset values and multiplying them with the squared difference. This representation resembles exactly the functional posed by Chan \& Vese.\\
@@ -54,68 +71,68 @@ This means that the length term is formulated by integrating the histogram over 
 By rearranging and splitting the integral, assuming $\int_{\R_+}\int_{\Gamma}h_{I,\phi}(i,j,\vec{\beta},\vec{\sigma}) \df i\df j\neq 0$, we optain
 
 \begin{equation}
-c_1 = \frac{\int_{\R_+}  \int_{\Gamma}i\cdot h_{I,\phi}(i,j,\vec{\beta},\vec{\sigma}) \df i\df j}{\int_{\R_+}\int_{\Gamma}h_{I,\phi}(i,j,\vec{\beta},\vec{\sigma}) \df i\df j},
+  c_1 = \frac{\int_{\R_+}  \int_{\Gamma}i\cdot h_{I,\phi}(i,j,\vec{\beta},\vec{\sigma}) \df i\df j}{\int_{\R_+}\int_{\Gamma}h_{I,\phi}(i,j,\vec{\beta},\vec{\sigma}) \df i\df j},
 \end{equation}
 
 and 
 
 \begin{equation}
-\frac{\partial^2 F}{\partial c_1^2} = \frac{\partial}{\partial c_1}\int_{\R_+}\int_{\Gamma}-2(i-c_1) h_{I,\phi}(i,j,\vec{\beta},\vec{\sigma}) \df i\df j = \int_{\R_+}\int_{\Gamma}2 h_{I,\phi}(i,j,\vec{\beta},\vec{\sigma}) \df i\df j>0.
+  \frac{\partial^2 F}{\partial c_1^2} = \frac{\partial}{\partial c_1}\int_{\R_+}\int_{\Gamma}-2(i-c_1) h_{I,\phi}(i,j,\vec{\beta},\vec{\sigma}) \df i\df j = \int_{\R_+}\int_{\Gamma}2 h_{I,\phi}(i,j,\vec{\beta},\vec{\sigma}) \df i\df j>0.
 \end{equation}
 
 Similar arguments also hold for $c_2$, thus assuming $\int_{\R_-}\int_{\Gamma}h_{I,\phi}(i,j,\vec{\beta},\vec{\sigma}) \df i\df j\neq 0$ yields
 
 \begin{equation}
-c_2 = \frac{\int_{\R_-}\int_{\Gamma} i\cdot h_{I,\phi}(i,j,\vec{\beta},\vec{\sigma}) \df i\df j}{\int_{\R_-}\int_{\Gamma}h_{I,\phi}(i,j,\vec{\beta},\vec{\sigma}) \df i\df j}.
+  c_2 = \frac{\int_{\R_-}\int_{\Gamma} i\cdot h_{I,\phi}(i,j,\vec{\beta},\vec{\sigma}) \df i\df j}{\int_{\R_-}\int_{\Gamma}h_{I,\phi}(i,j,\vec{\beta},\vec{\sigma}) \df i\df j}.
 \end{equation}
 
-If $\int_{\R_-}\int_{\Gamma}h_{I,\phi}(i,j,\vec{\beta},\vec{\sigma}) \df i\df j=0$ or $\int_{\R_-}\int_{\Gamma}h_{I,\phi}(i,j,\vec{\beta},\vec{\sigma}) \df i\df j = 0$, the choice of $c_1$, $c_2$ does not matter, since the terms will vanish.
+If $\int_{\R_-}\int_{\Gamma}h_{I,\phi}(i,j,\vec{\beta},\vec{\sigma}) \df i\df j=0$ or $\int_{\R_+}\int_{\Gamma}h_{I,\phi}(i,j,\vec{\beta},\vec{\sigma}) \df i\df j = 0$, the choice of $c_1$, $c_2$ does not matter, since the terms will vanish.
 
 
 \section{Derivatives of Ordeless Levelset method}\label{section:OLder}
-We are interested in minimizing the functional $F$, hence we find the gradient wrt. to $\phi$, since we wish to minimize $\phi$. Let $\diff_\phi$ denote the differential operator wrt. $\phi$. Thus the differential is given by
+We are interested in minimizing the functional $F$, hence we find the gradient wrt. to $\phi$, since we wish to minimize $\phi$. Let $\partial_\phi$ denote the differential operator wrt. $\phi$. Thus the differential is given by
 
 \begin{equation}
-  \diff_\phi F = \diff_\phi \mathcal{L} + \diff_\phi \mathcal{A} + \diff_\phi\mathcal{M}_{inside} + \diff_\phi \mathcal{M}_{outside},
+  \partial_\phi F = \partial_\phi \mathcal{L} + \partial_\phi \mathcal{A} + \partial_\phi\mathcal{M}_{inside} + \partial_\phi \mathcal{M}_{outside},
 \end{equation}
 
 where $\mathcal{A}$ denotes the area term and $\mathcal{L}$ denotes the length term from \eqref{LOLF}\\
 
 Again lemma \ref{DiffLemma} is used. The same arguments as before hold, but we also have to assume that $P_2$ is differentiable and that the absolute derivative is majorated by an integrable function.\\
-Considering the terms seperately, the differential of the inside similarity measure $\mathcal{M}_{inside}$ is found to be
+Considering the terms seperately, the derivative of the inside similarity measure $\mathcal{M}_{inside}$ is found to be
 
 \begin{equation}
-\diff_\phi \mathcal{M}_{inside} = \diff_\phi \left( \lambda_1\int_{\R_+} \int_{\Gamma} \abs{i-c_1}^2h_{I,\phi}(i,j,\vec{\beta},\vec{\sigma})\df i\df j\right) = \lambda_1\int_{\R_+} \int_{\Gamma} \abs{i-c_1}^2 \diff_\phi h_{I,\phi}(i,j,\vec{\beta},\vec{\sigma})\df i\df j,
+  \partial_\phi \mathcal{M}_{inside} = \partial_\phi \left( \lambda_1\int_{\R_+} \int_{\Gamma} \abs{i-c_1}^2h_{I,\phi}(i,j,\vec{\beta},\vec{\sigma})\df i\df j\right) = \lambda_1\int_{\R_+} \int_{\Gamma} \abs{i-c_1}^2 \partial_\phi h_{I,\phi}(i,j,\vec{\beta},\vec{\sigma})\df i\df j,
 \end{equation}
 
 where
 
 \begin{equation}
   \begin{split}
-    D_\phi h_{I,\phi}(i,j,\vec{\beta},\vec{\sigma}) &= D_\phi \left(P_1(G(\vec{x},\sigma_1)*I(\vec{x})-i,\beta_1)P_2(G(\vec{x},\sigma_2)*\phi(\vec{x})-j,\beta_2)\right)\\ 
-    &= P_1(G(\vec{x},\sigma_1)*I(\vec{x})-i,\beta_1)D_\phi P_2(G(\vec{x},\sigma_2)*\phi(\vec{x})-j,\beta_2).
+    \partial_\phi h_{I,\phi}(i,j,\vec{\beta},\vec{\sigma}) &= \partial_\phi \left(P_1(G(\vec{x},\sigma_1)*I(\vec{x})-i,\beta_1)P_2(G(\vec{x},\sigma_2)*\phi(\vec{x})-j,\beta_2)\right)\\ 
+    &= P_1(G(\vec{x},\sigma_1)*I(\vec{x})-i,\beta_1)\partial_\phi P_2(G(\vec{x},\sigma_2)*\phi(\vec{x})-j,\beta_2).
   \end{split}
 \end{equation}
 
 The term outside similarity measure $\mathcal{M}_{outside}$ is differentiated similarly, hence
 
 \begin{equation}
-\diff_\phi \mathcal{M} = \lambda_2\int_{\R_-} \int_{\Gamma} \abs{i-c_1}^2 \diff_\phi h_{I,\phi}(i,j,\vec{\beta},\vec{\sigma})\df i\df j,
+\partial_\phi \mathcal{M} = \lambda_2\int_{\R_-} \int_{\Gamma} \abs{i-c_1}^2 \partial_\phi h_{I,\phi}(i,j,\vec{\beta},\vec{\sigma})\df i\df j,
 \end{equation}
 
 and likewise the length and area terms $\mathcal{L}$ and $\mathcal{A}$
 
 \begin{align}
-  \diff_\phi \mathcal{L} &= \mu \int_{\R_+} \int_{\Gamma} \diff_\phi h_{I,\phi}(i,j,\vec{\beta},\vec{\sigma})\df i\df j,\\
-  \diff_\phi \mathcal{A} &= \mu  \int_{\Gamma} \diff_\phi h_{I,\phi}(i,0,\vec{\beta},\vec{\sigma})\df i\df j.
+  \partial_\phi \mathcal{L} &= \mu \int_{\R_+} \int_{\Gamma} \partial_\phi h_{I,\phi}(i,j,\vec{\beta},\vec{\sigma})\df i\df j,\\
+  \partial_\phi \mathcal{A} &= \mu  \int_{\Gamma} \partial_\phi h_{I,\phi}(i,0,\vec{\beta},\vec{\sigma})\df i\df j.
 \end{align}
 
 \section{Optimization}\label{section:OLopt}
-In the implementation, a constant B-spline is used as the Parzen window over the image $I$ as defined in section \ref{HistIm}. Every pixel is chosen to represent one bin. The bin-size $\Delta i_m$ is thus the difference of successive intensities. Notice that the bin widths aren't equidistant. Hence the isophotes are not extracted smoothly. This is not necessary, because the image is constant in our equation, since it does not change finding the minimum of \eqref{LOLF}.\\
+For the optimization process, a constant B-spline is used as the Parzen window over the image $I$ as defined in section \ref{HistIm}. Note that B-splines are Parzen windows which is proven in lemma \eqref{PWBspline}. Every pixel is chosen to represent one bin. The bin-size $\Delta i_m$ is thus the difference of successive intensities, the bin widths are not necessarily equidistant. Hence the isophotes are not extracted smoothly. This is not required, because the image is constant in our equation, since it does not change finding the minimum of \eqref{LOLF}.\\
 The kernel $G$ over the image $I$ is chosen to be a Gaussian kernel as stated in \eqref{loikernel}. 
 
-For the levelset function $\phi$, the histogram is smoothed in order to be able to develop the levelset. A uniform cubic B-spline is chosen to represent the Parzen window over $\phi$, where the bin size is chosen to be 1.\\
-Thus the knots $t_i$ are given by integers such that
+For the levelset function $\phi$, the histogram is smoothed in order to be able to develop the levelset. A uniform cubic B-spline is chosen to represent the Parzen window over $\phi$, where the bin size is chosen to be 1. We have assumed that $P_2$, the Parzen window over $\phi$ is differentiable, but B-splines of order greater or equal 2 are differentiable, as proven in lemma \eqref{derBspline}.\\
+The knots $t_i$ for the Parzen window are given by integers such that
 \[
 t_{-1},t_0,\dots,t_n = \lfloor\min_{(x,y)\in\Omega}\{\phi(x,y)\}\rfloor, \lfloor\min_{(x,y)\in\Omega}\{\phi(x,y)\}\rfloor, \dots, \lfloor\max_{(x,y)\in\Omega}\{\phi(x,y)\}\rfloor.
 \]
@@ -150,10 +167,10 @@ where $t = \phi-\lfloor \phi\rfloor \in [0,1]$ and $P_i$ are the control points 
   \end{cases}
 \end{equation}
 
-In order to find the derivative of the functional \eqref{LOLF}, we need to find the derivative of the Parzen window, as explaned in \ref{optimization}, which is found to be
+In order to find the derivative of the functional \eqref{LOLF}, we need to find the derivative of the Parzen window, as explaned in \ref{optimization}. The derivative is found to be
 
 \begin{equation}
-\diff_\phi  P_2(t,\beta) = 
+\partial_\phi  P_2(t,\beta) = 
   \begin{bmatrix} t^2 & t & 1 & 0 \end{bmatrix} 
   \frac{1}{6} 
   \begin{bmatrix}
@@ -170,13 +187,4 @@ In order to find the derivative of the functional \eqref{LOLF}, we need to find 
     \end{array}\right].
 \end{equation}
 
-Since the spatial information, i.e. the position of the points in the image and the levelset, is discarded using the locally orderless representation, the Hessian matrix will be diagonal. Any two different pixels of $\phi$ are independent of each other, thus the partial second derivatives in the Hessian are 0 except on the diagonal. This motivates to take steps into the steepest descent direction. The algorithm to segment an image looks as follows.
-\begin{lstlisting}
-Input: image %$I$%, inital levelset %$\phi$%, parameters %$\sigma$%, %$\lambda_1$%, %$\lambda_2$%, %$\mu$%, %$\nu$%, %$\gamma$%
-Smoothen I using a gaussian kernel %$G(\cdot,\sigma)$%
-Repeat until %$\phi$% has converged
-  Calculate %$\df F$% using the Parzen window
-  Set %$\phi = \phi - \gamma\df F$%
-  %$n+=1$%
-Output %$\phi_0$%
-\end{lstlisting} 
+Since the spatial information, i.e. the position of the points in the image and the levelset, is discarded using the locally orderless representation, the Hessian matrix will be diagonal. Any two different pixels of $\phi$ are independent of each other, thus the partial second derivatives in the Hessian are 0 except on the diagonal. Therefore, the levelset is evolved by taking steps in the steepest descent direction.
