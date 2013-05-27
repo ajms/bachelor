@@ -117,7 +117,7 @@ Now assume that \eqref{DerBspline} holds for $k$ and that $B_i^k$ is $C^{k-1}(\R
   \intertext{From the induction hypothesis, we have}
   \frac{\df}{\df x} B_i^{k+1} &= \alpha_i^{k+1}(k\beta_i^{k}B_i^{k-1} - k\beta_{i+1}^{k}B_{i+1}^{k-1}) + (1-\alpha_{i+1}^{k+1})(k\beta_{i+1}^{k}B_{i+1}^{k-1} - k\beta_{i+1}^k B_{i+1}^{k-1})\\
   &+ \beta_i^{k+1}B_i^k - \beta_{i+1}^{k+1}B_{i+1}^k.\\
-  \intertext{By rearranging, we optain}
+  \intertext{By rearranging, we obtain}
   \frac{\df}{\df x} B_i^{k+1} &= \beta_i^{k+1} B_i^k - \beta_{i+1}^{k+1}B_{i+1}^k + k\alpha_i^{k+1}\beta_i^kB_i^{k-1} - k\alpha_i^{k+1}\beta_{i+1}^kB_{i+1}^{k-1}\\
   &+ k(1-\alpha_{i+1}^{k+1})\beta_{i+1}^kB_{i+1}^{k-1} - k(1-\alpha_{i+1}^{k+1})\beta_{i+1}^kB_{i+{k+1}}^{k-1}\\
   \intertext{Now notice that $\alpha_i^{k+1}\beta_i^{k} = \alpha_i^{k}\beta_i^{k+1}$ and $(1-\alpha_i^{k+1})\beta_{i+1}^{k} = (1-\alpha_{i+1}^{k})\beta_{i}^{k+1}$, thus}
@@ -135,7 +135,7 @@ The integral of B-splines are given by
 \int_{-\infty}^x = \frac{t_{i+k+1}-t_i}{k+1} \sum_{j=i}^\infty B_j^{k+1}(x)
 \end{equation}
 \end{lemma}
-\textbf{Proof.} From lemma \ref{derBspline} we optain the following formula
+\textbf{Proof.} From lemma \ref{derBspline} we obtain the following formula
 \begin{equation}
   \frac{\df}{\df x} \sum_{i=-\infty}^\infty c_i B_i^k(x) = k\sum_{i=-\infty}^\infty \frac{c_i-c_{i-1}}{t_{i+k}-t_i}B_i^{k-1}, \quad k\geq 2.\label{IntBspline}
 \end{equation}

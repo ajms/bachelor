@@ -22,7 +22,7 @@ Suppose that $I$ is a simple image consisting of a constant square on a constant
 
 This leads to the idea of measuring the difference between the image values and some fixed but unknown values $c_1,c_2$ defined on the subdomains $\omega$ and $\Omega\backslash \overline{\omega}$, seperated by an unknown curve $C$. Then $F_1$ is minimized by ajusting the curve $C$ such that any $I(x,y)$ is placed into the segment, where the difference to those values is the least.\\
 
-Adding regularisation terms, penalizing the length of $C$ and the area of $\omega$ yields the following functional:
+Adding regularization terms, penalizing the length of $C$ and the area of $\omega$ yields the following functional:
 
 \begin{equation}
   \begin{split}
@@ -210,15 +210,14 @@ For convenience, let
 \end{equation}
 
 then
-
-\begin{align*}
+\begin{align}
 A_{i,j} &= \frac{-\delta_\epsilon(\phi_{i,j}^n)\cdot\mu\cdot \zeta_{i,j}^n}{h^2},\\
 B_{i,j} &= \frac{-\delta_\epsilon(\phi_{i,j}^n)\cdot\mu\cdot\eta_{i,j}^n}{h^2},\\
 C_{i,j} &= \frac{-\delta_\epsilon(\phi_{i,j}^n)\cdot\mu\cdot \zeta_{i-1,j}^n}{h^2},\\
 D_{i,j} &= \frac{-\delta_\epsilon(\phi_{i,j}^n)\cdot\mu\cdot\eta_{i,j-1}^n}{h^2},\\
 E_{i,j} &= \frac{2\delta_\epsilon(\phi_{i,j}^n)\cdot\mu\cdot(\zeta_{i,j}^n + \eta_{i,j}^n + \zeta_{i-1,j}^n +\eta_{i,j-1}^n)}{h^2}+\frac{1}{\Delta t},\\
 b_{i,j} &= \delta_\epsilon(\phi_{i,j}^n)\left(\nu + \lambda_1(u_{i,j}-c_1(\phi^n))^2 - \lambda_2(u_{i,j}-c_2(\phi^n))^2\right) + \frac{\phi_{i,j}^n}{\Delta t}.
-\end{align*}
+\end{align}
 
 Hence for the $n$'th timestep, we optain
 
