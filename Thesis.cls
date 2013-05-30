@@ -284,6 +284,7 @@ mathescape=true
 %----------------------------------------------------------------------------------------    
 
 % The default title page, this is not used in this www.latextemplates.com version            
+\iffalse
 \renewcommand\maketitle{
   \btypeout{Title Page}
   \hypersetup{pdftitle={\@title}}
@@ -338,6 +339,7 @@ mathescape=true
   \global\let\and\relax
   \cleardoublepage
 }
+\fi
 %----------------------------------------------------------------------------------------
 %	ABSTRACT PAGE DESIGN
 %----------------------------------------------------------------------------------------
