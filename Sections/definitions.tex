@@ -1,7 +1,7 @@
  % For referencing the chapter elsewhere, use \ref{Chapter1} 
 
-\lhead{\cref{chapter:defthm} \emph{Definitions and theorems}} % This is for the header on each page - perhaps a shortened title
 \chapter{Definitions and theorems}\label{chapter:defthm}
+\lhead{\cref{chapter:defthm} \emph{Definitions and theorems}} % This is for the header on each page - perhaps a shortened title
 
 This section contains definitions and theorems used throughout the other sections. The definitions are citet from different sources. The theorems are either proven or there is a reference to the proof.\\
 
@@ -13,7 +13,7 @@ Let $P:\R\to \R$ be a function such that $\int_\R P(x) \df x= 1$ and let $\{x_i\
 \tilde{p}_N(x) = \frac{1}{n\beta(N)}\sum_{i=1}^n P((x-x_i)/\beta(n)).
 \end{equation}
 
-It is required for $\beta(n)$ to be strictly a positive and $\lim_{n\to\infty}\beta(n) = 0$ to ensure convwergence. $\beta$ acts as scaling factor that controls the width of the Parzen window $P$. \cite{the.00,parzen.62}
+It is required for $\beta(n)$ to be strictly positive and $\lim_{n\to\infty}\beta(n) = 0$ to ensure convergence. $\beta$ acts as a scaling factor that controls the width of the Parzen window $P$. \cite{the.00,parzen.62}
 \end{definition}
 
 \begin{definition}\label{scalespace}
@@ -80,7 +80,7 @@ Let $k=1$ and assume $x\neq t_i,\,t_{i+1},\,t_{i+2}$. We find that
   &= \frac{1}{t_{i+1}-t_{i}}B_i^0(x) - \frac{1}{t_{i+2}-t_{i+1}} B_{i+1}^0(x),
 \end{align}
 
-which exactly resembles the formula \eqref{DerBspline} for $k=1$.\\
+which exactly is the formula \eqref{DerBspline} for $k=1$.\\
 
 Now let $k=2$, by using the recursive defintion of B-splines \eqref{recurDef} twice, we get
 \begin{align}
@@ -143,7 +143,7 @@ Let
 \[
   c_j = \begin{cases}0 & \mbox{ if } j<i\\ 1 & \mbox{ if } j\geq i.\end{cases}
 \]
-Taking the derivative on both sides of \eqref{IntBspline} and using the formula statet above yields the following identity
+Taking the derivative on both sides of \eqref{IntBspline} and using the formula stated above yields the following identity
 \begin{equation}
 B_i^k(x) = \frac{t_{i+k+1}-t_{i}}{k+1}(k+1)\frac{1}{t_{i+k+1}-t_{i}}B_i^k(x).
 \end{equation}
@@ -152,7 +152,7 @@ Thus \eqref{IntBspline} holds, by noting that both sides reduce to 0 when $x = t
 \begin{proposition}\label{PWBspline}
 A uniform B-spline with $t_{j+1}-t_j = 1$ for all knots is a Parzen window.
 \end{proposition}
-\textbf{Proof}. From lemma \ref{intBspline}, we know that the derivative of a basis B-spline function is given by \eqref{IntBspline}. Since the distance between the knots is 1, we have that $t_{i+k+1}-t_i = k+1$, thus the integral is just the sum over B-spline functions. The sum of all B-splines equals 1 as statet in property \ref{property2}.\\
+\textbf{Proof}. From lemma \ref{intBspline}, we know that the derivative of a basis B-spline function is given by \eqref{IntBspline}. Since the distance between the knots is 1, we have that $t_{i+k+1}-t_i = k+1$, thus the integral is just the sum over B-spline functions. The sum of all B-splines equals 1 as stated in property \ref{property2}.\\
 
 \section{Theorems and lemmas}
 

@@ -1,7 +1,7 @@
  % For referencing the chapter elsewhere, use \ref{Chapter1} 
 
-\lhead{\cref{chapter:experiments} \emph{Experiments}} % This is for the header on each page - perhaps a shortened title
 \chapter{Experiments}\label{chapter:experiments}
+\lhead{\cref{chapter:experiments} \emph{Experiments}} % This is for the header on each page - perhaps a shortened title
 \section{Setup of the experiments}\label{section:setupex}
 \begin{figure}[h]
   \centering
@@ -9,10 +9,10 @@
   \subfigure[Fig. \ref{I2}\label{subfig:I2init}]{\includegraphics[width=0.24\textwidth]{I2init.eps}}
   \subfigure[Fig. \ref{I3}\label{subfig:I3init}]{\includegraphics[width=0.24\textwidth]{I3init.eps}}   
   \subfigure[Fig. \ref{I1}\label{subfig:I4init}]{\includegraphics[width=0.24\textwidth]{I5init.eps}}   
-  \caption{Initializations of test images. Fig. x referes to the figure of the final segmentation.}
+  \caption{Initializations of test images. Fig. x refers to the figure of the final segmentation.}
 \end{figure}
 
-The two methods Chan Vese Levelset (CVL) and Ordeless Levelsets (OL) are compared by segmenting four synthetic images and one real image, a slice from a MRI-scanning. The synthetic images cover different properties of image segmentation.\\
+The two methods Chan Vese Levelset (CVL) and Orderless Levelset (OL) are compared by segmenting four synthetic images and one real image, a slice from an MRI-scanning. The synthetic images cover different properties of image segmentation.\\
 The efficiency of the methods is measured by the time consumption and the number of iterations. The quality of the segmentation is measured by calculating the deviation of the final segmentation and comparing it to the images as they are constructed, such that 
 
 \begin{equation}
@@ -29,15 +29,15 @@ where $I_{\text{ref}}$ is the reference image defined as
 \end{equation}
 
 Furthermore the quality of the segmentation is evaluated visually, in particular for the non-synthetic images.\\
-The convergence of the methods is investigated by two plots (\aref{AppendixA}) over the iteration number; the value of functional $F$ and the difference of $\phi^{n+1}$ and $\phi^n$ measured using the Euclidian norm $||\cdot||_2$, where $n$ denotes the iteration.\\
+The convergence of the methods is investigated by two plots (\aref{AppendixA}) over the iteration number; the value of functional $F$ and the difference of $\phi^{n+1}$ and $\phi^n$ measured using the Euclidean norm $||\cdot||_2$, where $n$ denotes the iteration.\\
 Accordingly $\abs{F^{n+1}-F^n}<k$ and $||\phi^{n+1}-\phi^{n}||_2<l$ are also chosen as convergence criterion, where the constants $k,l$ are found empirically from the convergence plots. It is hard to find convergence criteria in general, since the differences in $\phi$ and $F$ are highly dependent on the individual image. Thus, the range of the intensity values, the complexity of the image and the image's dimensions all influence the scale of $F$ and $\phi$.\\
-In order to investigate the stability of the respective methods, one synthetic image is segmentented using three different initializations and the final segmentation is compared.\\
+In order to investigate the stability of the respective methods, one synthetic image is segmented using three different initializations and the final segmentation is compared.\\
 Finally, the ability of the OL-method to segment 3-dimensional images is tested using a PET-image (Positron Emission Tomography).\\
 
-For CVL, the step sizes are $h=1$ and $\Delta t=0.1$. The default parameters for the weightening of the segements are $\lambda_1,\,\lambda_2 = 1$ and the regularizations $\mu = 0.1\cdot 255^2$ and $\nu = 0$.\\
-Additionally, one might notice the high value of $\mu$ in CVLs Levelset. Since we solve large equation systems in the method, it is convenient to use the intensity values in $[0,255]$ to prevent the matrix entries from getting too small. This is not necessary in the Locally Ordeless method, thus the intensity values are in $[0,1]$. To ease the comparison of the figures, the CVL-images are normalized in the plots.\\
-In the OL method, the default stepsize for the descent direction is $\gamma = 10$. The default parameters for the weightening of the segements are $\lambda_1,\,\lambda_2 = 1$ as before, but the default values for the regularizations are chosen to be $\mu=0$, $\nu=0$ and the image is smoothened by a Gaussian kernel with $\sigma = 1$. \\
-The difference in the regularization is due to the irregularities in images. In CVLs method, the length regularization is used to reduce the influence of noise, while this is handled by the smoothing in the Locally Orderless method. This is elaborated in the discussion of the segmentationen.\\
+For CVL, the step sizes are $h=1$ and $\Delta t=0.1$. The default parameters for the weighting of the segments are $\lambda_1,\,\lambda_2 = 1$ and the regularizations $\mu = 0.1\cdot 255^2$ and $\nu = 0$.\\
+Additionally, one might notice the high value of $\mu$ in the CVL-method. Since we solve large equation systems in the method, it is convenient to use the intensity values in $[0,255]$ to prevent the matrix entries from getting too small. This is not necessary in the OL-method, thus the intensity values are in $[0,1]$. To ease the comparison of the figures, the CVL-images are normalized in the plots.\\
+In the OL method, the default step size for the descent direction is $\gamma = 10$. The default parameters for the weighting of the segments are $\lambda_1,\,\lambda_2 = 1$ as before, but the default values for the regularizations are chosen to be $\mu=0$, $\nu=0$ and the image is smoothened by a Gaussian kernel with $\sigma = 1$. \\
+The difference in the regularization is due to the irregularities in images. In the CVL-method, the length regularization is used to reduce the influence of noise, while this is handled by the smoothing in the OL-method. This is elaborated in the discussion of the segmentation.\\
 All experiments are run on a Intel Core i7-3517U CPU, 1.90 GHz with 4 GB of RAM.\\
 
 \section{Results of the experiments}
@@ -74,7 +74,7 @@ The tables show the results of the segmentations. The parameters in the table ar
   \caption{Final segmentation using \ref{subfig:I1} OL and \ref{subfig:I1cv} CVL of figure \ref{subfig:I1init}. Dimensions: $100\times 100$ pixels.}\label{I1}
 \end{figure}
 
-The first synthetic image (figure \ref{I1}) is generated to test the segmentation of different shapes. Therefore the image is a combination of a square and a cicle in one segment. Both final segmentations are almost identical and convergence is achieved rather quickly. This is caused by a ``good'' guess on the initial segmentation and the simple structure of the image.\\
+The first synthetic image (figure \ref{I1}) is generated to test the segmentation of different shapes. Therefore the image is a combination of a square and a circle in one segment. Both final segmentations are almost identical and convergence is achieved rather quickly. This is caused by a ``good'' guess on the initial segmentation and the simple structure of the image.\\
 
 \begin{figure}[h]
   \centering
@@ -83,7 +83,7 @@ The first synthetic image (figure \ref{I1}) is generated to test the segmentatio
   \caption{Final segmentation using \ref{subfig:I2} OL and \ref{subfig:I2cv} CVL of figure \ref{subfig:I2init}. Dimensions: $100\times 100$ pixels.}\label{I2}
 \end{figure}
 
-Figure \ref{I2} shows two disjoint squares of which one touches the boundary. Thus we are interested in investigating the segmentation of disjoint inner segments and the stability on the boundary. Notice that the OL-segmentation rounds off the corner of one square at the boundary while the CVL-segmentation is more stable on this matter. This is caused by the smoothening of the image in the OL-method. Segmentation of the image with less/no smoothening will result in lots of small artefacts in the inner segment, since the OL-method handles noise using the smoothening.\\
+Figure \ref{I2} shows two disjoint squares of which one touches the boundary. Thus we are interested in investigating the segmentation of disjoint inner segments and the stability on the boundary. Notice that the OL-segmentation rounds off the corner of one square at the boundary while the CVL-segmentation is more stable on this matter. This is caused by the smoothing of the image in the OL-method. Segmentation of the image with less/no smoothing will result in lots of small artifacts in the inner segment, since the OL-method handles noise using the smoothing.\\
 
 \begin{figure}[h]
   \centering
@@ -99,7 +99,7 @@ Figure \ref{I2} shows two disjoint squares of which one touches the boundary. Th
 \end{figure}
 
 
-The third image is segmented in two ways, as disjoint segments and as one segmentæ. This is used to test the ability of the methods to segment in different ways by carefully choosing right parameters. The first results (figure \ref{I3}) show exactly the same segmentation with a deviation of $0.00$ for both methods. Hence the method result in exactly the same segmentation as the image is constructed. This could be expected, since there is no noise in the image, thus no artifacts disturbing the segmentation. In the figure \ref{I4}, we see that both methods also can segment close elements as one segment. The length-regularization is used in the CVL-method to achieve this, while choosing a high value of $\sigma$ and weightening the inner segment does the job for the OL-method. The large amount of smoothening in the OL-method causes that the segmentation contour is not as tight as in the CVL-method. Conversely, it was not possible to achieve a non-tight segmentation contour using the CVL-method. In the convergence plots figure \ref{I4con}, the complexity and non-convexity of the CVL-method is also visualized, since the plot of the functional $F$ decreases and increases in steps. This is probably caused by local minima.\\
+The third image is segmented in two ways, as disjoint segments and as one segments. This is used to test the ability of the methods to segment in different ways by carefully choosing right parameters. The first results (figure \ref{I3}) show exactly the same segmentation with a deviation of $0.00$ for both methods. Hence the method result in exactly the same segmentation as the image is constructed. This could be expected, since there is no noise in the image, thus no artifacts disturbing the segmentation. In figure \ref{I4}, we see that both methods also can segment close elements as one segment. The length-regularization is used in the CVL-method to achieve this, while choosing a high value of $\sigma$ and weighting the inner segment does the job for the OL-method. The large amount of smoothing in the OL-method causes that the segmentation contour is not as tight as in the CVL-method. Conversely, it was not possible to achieve a non-tight segmentation contour using the CVL-method. In the convergence plots figure \ref{I4con}, the complexity and non-convexity of the CVL-method is also visualized, since the plot of the functional $F$ decreases and increases in steps. This is probably caused by local minima.\\
 
 \begin{figure}[h]
   \centering
@@ -108,7 +108,7 @@ The third image is segmented in two ways, as disjoint segments and as one segmen
   \caption{Final segmentation using \ref{subfig:I5} OL and \ref{subfig:I5cv} CVL of figure \ref{subfig:I4init} in one segment. Dimensions: $256\times 256$ pixels.}\label{I5}
 \end{figure}
 
-Finally the segmentation of a brain in figure \ref{I5} yields almost identical segmentations for both methods. In order to obtain a tight segmentation of the brain, different parameters are ajusted in the two methods. For the OL-method, $\nu$ is set rather high to allow small segments to appear. The image of the brain is smooth on beforehand, so no smoothening is used in the segmentation. Furthermore $\gamma$ is set to be 100, since this increases the convergence speed significantly. In the CVL-method, a small value is chosen for the length-regularization, as we are not interested to prevent small segments from growing; we wish to detect all small segments and structures in the brain. Additionally the inner segment is weightened to ensure a tighter segmentation. The image has the lowest number of iterations in the whole set of experiments. This is due to the small differences in intensity values and the absence of noise, hence the levelset function does not need as many iterations to match the image.\\
+Finally the segmentation of a brain in figure \ref{I5} yields almost identical segmentations for both methods. In order to obtain a tight segmentation of the brain, different parameters are adjusted in the two methods. For the OL-method, $\nu$ is set rather high to allow small segments to appear. The image of the brain is smooth on beforehand, so no smoothing is used in the segmentation. Furthermore $\gamma$ is set to be 100, since this increases the convergence speed significantly. In the CVL-method, a small value is chosen for the length-regularization, as we are not interested to prevent small segments from growing; we wish to detect all small segments and structures in the brain. Additionally the inner segment is weighted to ensure a tighter segmentation. The image has the lowest number of iterations in the whole set of experiments. This is due to the small differences in intensity values and the absence of noise, hence the levelset function does not need as many iterations to match the image.\\
 
 \begin{figure}[h]
   \centering
@@ -134,13 +134,13 @@ The stability investigation of the methods is performed using the 3 initializati
   \caption{Segmentation of a PET-image using the OL-method. Figure \ref{subfig:brain1} shows the surface of the brain, figure \ref{subfig:brain2} shows a cut through the segmentation. Dimensions: $200\times 215\times 180$ pixels.}\label{fig:brain}
 \end{figure}
 
-Figure \ref{fig:brain} shows the segmentation of a brain which took 215s in computation time. The results look convincing and as visuable in figure \ref{subfig:brain2}, the brain is segmented on the inside as well.
+Figure \ref{fig:brain} shows the segmentation of a brain which took 215s in computation time. The results look convincing and as visible in figure \ref{subfig:brain2}, the brain is segmented on the inside as well.
 
 \section{Discussion of the experimental results}
 Generally the OL-method acts faster that the CVL-method, this can be seen by comparing the computation times in the result tables. In particular high values of $\mu$, i.e. regularizing for the length of the curve results in significantly higher computation times. This is clear from the formulation of the CVL-method, because the equation system solved in each iteration reduces to a diagonal matrix choosing $\mu=0$. Thus the higher the value of $\mu$ is, the more complicated equation systems have to be solved.\\
-The OL-method is also more stable computing larger images. This can be seen from the brain image (figure \ref{I5}), an $256\times 256$ pixels image. The computation time is not increased particulary in comparison to the first image (figure \ref{I1}) with almost the same number of iterations. This is not the case for the CVL-method, where the computation time is doubled even though the number of iterations is lower. This can also be adressed to the equation systems. CVL use an implicit method, thus one has to solve equation systems of size $M\cdot N\times M\cdot N$, where $M\times N$ is the image size. Conversely, the OL-method is linear wrt. the number of pixels in one timestep.\\
+The OL-method is also more stable computing larger images. This can be seen from the brain image (figure \ref{I5}), an $256\times 256$ pixels image. The computation time is not increased particularly in comparison to the first image (figure \ref{I1}) with almost the same number of iterations. This is not the case for the CVL-method, where the computation time is doubled even though the number of iterations is lower. This can also be addressed to the equation systems. CVL use an implicit method, thus one has to solve equation systems of size $M\cdot N\times M\cdot N$, where $M\times N$ is the image size. Conversely, the OL-method is linear wrt. the number of pixels in one time step.\\
 In the convergence plots of the experiments (\aref{AppendixA}), one might notice that for the OL-method, the value of the functional $F$ increases in the first iterations. This is because the final mean values $c_1$ and $c_2$ of the inner and outer segment have to be found, before the method converges. In the first iteration, the mean values are given by the initial segmentation which possibly is far from the final, converged segmentation. This cannot be seen to same extent on the convergence plots the CVL-method, even though the slope of the first iterations is lower than the one from the following iterations. This might be caused by the simple approach of subtracting the gradient from the levelset in the OL-method. Moreover, the convergence plots also reflect the complexity of the segmentation. Especially for the CVL-method, some segmentation show several local minima.\\
 The parameter $\gamma$ in the OL-method is used to control the convergence speed. A large value of $\gamma$ yields faster convergence and shows the same convergence plots as small $\gamma$ with larger steps. Allthough the quality of the segmentation is lower for large $\gamma$, i.e. the boundary of the inner segment is often not that ``clean'' and tight as when choosing small $\gamma$.\\ 
-Furthermore the choice of the parameter $\mu$ in the OL-method does not result in good segmentations. This might be caused by too few bins in the $\phi$-direction and choosing smaller bins prevents the segmentation from converging. But as mentioned in section \sref{section:setupex} the same results may be reached by smoothing more and weightening the segments appropriately. Another option is to choose shape priors in order to obtain the same properties as the length regularization.\\
+Furthermore the choice of the parameter $\mu$ in the OL-method does not result in good segmentations. This might be caused by too few bins in the $\phi$-direction and choosing smaller bins prevents the segmentation from converging. But as mentioned in section \sref{section:setupex} the same results may be reached by smoothing more and weighting the segments appropriately. Another option is to choose shape priors in order to obtain the same properties as the length regularization.\\
 
 Overall, the length regularization makes the CVL-method more flexible than the OL-method, because the solutions do not depend on a certain amount of smoothing. Nevertheless, the OL-method yields more stability finding the minimum of the solution and is independent of intializations. In addition, the computation times of the OL-method are significantly lower than the ones of the CVL-method.
