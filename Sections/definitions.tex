@@ -8,14 +8,13 @@ This section contains definitions and theorems used throughout the other section
 \section{Definitions of general concepts}
 \begin{definition}\label{parzen}
 Let $P:\R\to \R$ be a function such that $\int_\R P(x) \df x= 1$ and let $\{x_i\}_{i=1}^N$ be a set of $n$ samples of a random variable $X$ with probability density function $p(x)$. Then the Parzen estimate of $p$ is 
-
 \begin{equation}
 \tilde{p}_N(x) = \frac{1}{n\beta(N)}\sum_{i=1}^n P((x-x_i)/\beta(n)).
 \end{equation}
 
 It is required for $\beta(n)$ to be strictly positive and $\lim_{n\to\infty}\beta(n) = 0$ to ensure convergence. $\beta$ acts as a scaling factor that controls the width of the Parzen window $P$. \cite{the.00,parzen.62}
 \end{definition}
-
+\vspace{0.5cm}
 \begin{definition}\label{scalespace}
 Given an image $I:\Omega\to \R$, the scale-space is the family of derived signals $L(\vec{x},\sigma)$ given by the convolution of a kernel $G$ and the image $I$, i.e.
 
@@ -30,8 +29,7 @@ where $\sigma$ denotes the scale parameter and $*$ is the convolution operator w
 The definitions and theorems are formulated from the theory in \cite[chap.~6.5]{kin.02}.\\
 
 \begin{definition}\label{Bspline}
-Let $...,t_{-1},t_0<t_1<...$ be a real valued possibly infinite knot sequence. The basis B-splines $B_0^i: \R \to [0,1]$ of degree 0 are defined as
-
+Let $...,t_{-1},t_0<t_1<...$ be a real valued, possibly infinite, knot sequence. The basis B-splines $B_i^0: \R \to [0,1]$ of degree 0 are defined as
 \begin{equation}
   B_i^0(x) = 
   \begin{cases}
@@ -42,19 +40,18 @@ Let $...,t_{-1},t_0<t_1<...$ be a real valued possibly infinite knot sequence. T
 for $n\in\N$.
 
 The basis B-splines $B_i^k:\R\to [0,1]$ of degree $k$ are defined recursively by
-
 \begin{equation}
   B_i^k(x) = \frac{x-t_i}{t_{i+k}-t_i} B_i^{k-1}(x) + \frac{t_{i+k}-x}{t_{i+k+1}-t_{i+1}} B_{i+1}^{k-1}(x) \quad \text{ for } k\geq 1,\;i\in \Z.\label{recurDef}
 \end{equation}
-\end{definition}\
-
-\begin{remark} of B-splines.
+\end{definition}
+\vspace{0.5cm}
+\begin{remark} about B-splines.
   \begin{enumerate}
     \item The support of $B_i^k$ is the interval $[t_i,t_{i+k+1})$.
     \item $\displaystyle\sum_{i=-\infty}^\infty B_i^k(x) = 1$ for all $x$.\label{property2}
   \end{enumerate}
-\end{remark}\
-
+\end{remark}
+\vspace{0.5cm}
 \begin{lemma}\label{derBspline}
   The derivatives of B-spline basis functions are calculated as follows
   \begin{equation}
@@ -203,4 +200,4 @@ is differentiable and its derivative is
   \frac{\partial}{\partial t} v(t) = \int \partial u(t,x) \df x
 \end{equation}
 \end{lemma}
-\textbf{Proof} This lemma is proven in \cite[p.~92]{schilling.11}, theorem 11.5.\\
+\textbf{Proof} This lemma is proven in \cite[p.~92]{schilling.11}, lemma 11.5.\\

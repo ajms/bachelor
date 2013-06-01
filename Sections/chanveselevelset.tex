@@ -133,7 +133,7 @@ The $\partial_y (\partial_{\phi'_y}L)$-part is found similarly. Combining those 
     &=\left(\lambda_1(I-c_1)^2 - \lambda_2(I-c_2)^2 + \nu  - \mu \nabla \cdot \left(\frac{\nabla\phi}{\abs{\nabla\phi}}\right)\right)\delta_\epsilon(\phi)
   \end{split}\label{EulerLagrangeSol}
 \end{equation}
-By theorem \ref{EulerLagrangeThm}, the functional $F$ \eqref{F2} is stationary for $\phi$ satisfying \eqref{EulerLagrangeSol}.
+By the Euler Lagrange equation, the functional $F$ \eqref{F2} is stationary for $\phi$ satisfying \eqref{EulerLagrangeSol}.
 
 To find the stationary point that is a (global) minimum of the functional $F$, we introduce an artificial time parameterization $t\geq 0$ for the steepest descent direction. Thus we let $\phi: [0,\infty) \times \Omega \to \R$ as $\phi(t,x,y)$, such that $\phi(0,x,y)=\phi_0(x,y)$, where $\phi_0(x,y)$ is an initial levelset function. This gives the following differential equation, we wish to solve:
 \begin{equation}
@@ -263,7 +263,9 @@ where the gradient $\nabla \psi$ is approximated by
   \end{cases}
 \end{align}
 
-where $+$ and $-$ denote the positive and the negative part respectively. Thus if the forward and the backward approximations of the derivatives yield different signs, the largest is chosen. In any other case, one of them will be 0. The equation \eqref{reinit2} is then updated by 
+where $+$ and $-$ denote the positive and the negative part respectively, i.e. if the sign of the derivative approximation is positive, then the negative part is 0 and vice versa. Furthermore, $G$ is formulated such that if the forward and the backward approximations of the derivatives yield different signs, the largest is chosen. In any other case, one of them will be 0. The equation \eqref{reinit2} is then updated by 
 \begin{equation}
 \psi_{i,j}^{n+1}=\psi_{i,j}^n - \Delta t \;\sign_\epsilon(\phi_{i,j})G(\psi_{i,j}^n).
-\end{equation}\vline
+\end{equation}
+
+The reinitialization ensures that the contour does not change, since $G$ is defined to be 0 on the boundary of the inner segment. Since we subtract the absolute gradient minus 1 in each iteration, the method has converged exactly when the absolute gradient in $\psi$ equals 1 in every point.

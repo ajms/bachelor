@@ -112,25 +112,6 @@ Date:\\
 
 \clearpage % Start a new page
 \fi
-%----------------------------------------------------------------------------------------
-%	QUOTATION PAGE
-%----------------------------------------------------------------------------------------
-
-\iffalse
-\pagestyle{empty} % No headers or footers for the following pages
-
-\null\vfill % Add some space to move the quote down the page a bit
-
-\textit{``Thanks to my solid academic training, today I can write hundreds of words on virtually any topic without possessing a shred of information, which is how I got a good job in journalism."}
-
-\begin{flushright}
-Dave Barry
-\end{flushright}
-
-\vfill\vfill\vfill\vfill\vfill\vfill\null % Add some space at the bottom to position the quote just right
-
-\clearpage % Start a new page
-\fi
 
 %----------------------------------------------------------------------------------------
 %	ABSTRACT PAGE
@@ -172,38 +153,6 @@ The acknowledgements and the people to thank go here, don't forget to include yo
 \lhead{\emph{List of Tables}} % Set the left side page header to "List of Tables"
 \listoftables % Write out the List of Tables
 \fi
-%----------------------------------------------------------------------------------------
-%	ABBREVIATIONS
-%----------------------------------------------------------------------------------------
-
-\iffalse
-\clearpage % Start a new page
-
-\setstretch{1.5} % Set the line spacing to 1.5, this makes the following tables easier to read
-
-\lhead{\emph{Abbreviations}} % Set the left side page header to "Abbreviations"
-\listofsymbols{ll} % Include a list of Abbreviations (a table of two columns)
-{
-\textbf{LAH} & \textbf{L}ist \textbf{A}bbreviations \textbf{H}ere \\
-%\textbf{Acronym} & \textbf{W}hat (it) \textbf{S}tands \textbf{F}or \\
-}
-\fi
-
-%----------------------------------------------------------------------------------------
-%	PHYSICAL CONSTANTS/OTHER DEFINITIONS
-%----------------------------------------------------------------------------------------
-
-\iffalse
-\clearpage % Start a new page
-
-\lhead{\emph{Physical Constants}} % Set the left side page header to "Physical Constants"
-
-\listofconstants{lrcl} % Include a list of Physical Constants (a four column table)
-{
-Speed of Light & $c$ & $=$ & $2.997\ 924\ 58\times10^{8}\ \mbox{ms}^{-\mbox{s}}$ (exact)\\
-% Constant Name & Symbol & = & Constant Value (with units) \\
-}
-\fi
 
 %----------------------------------------------------------------------------------------
 %	SYMBOLS
@@ -221,15 +170,11 @@ $\partial_x$ & Differential operator wrt. $x$, i.e. $\partial_x = \frac{\partial
 $\mathbb{E}\otimes\mathbb{F}$ & $\sigma$-algebra on a product space $\mathcal{X}\times \mathcal{Y}$.\\
 $\mathcal{M}^+(\mathcal{X,\mathbb{E}})$ & Space of non-negative measurable functions on $\mathcal{X}$ with the $\sigma$-algebra $\mathbb{E}$ on $\mathcal{X}$.\\
 $\mu\otimes\nu$ & Product measure.\\
-$L_x$ & $x$-part of $L(x,y)$.\\
 $\R_+$ & Non-negative real numbers, i.e. $[0,\infty)$.\\
 $\R_-$ & Negative real numbers, i.e. $(-\infty,0)$.\\
 $(\mathcal{X},\mathbb{E},\mu)$ & Measure space on $\mathcal{X}$ with $\sigma$-algebra $\mathbb{E}$ and measure $\mu$.\\
 $||\cdot||_2$ & Euclidian norm.\\
 $\cdot *\cdot$ & Convolution operator.\\
-
-
-% Symbol & Name & Unit \\
 }
 
 %----------------------------------------------------------------------------------------

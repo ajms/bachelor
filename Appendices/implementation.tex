@@ -21,7 +21,8 @@ Output: 0'th levelcurve of %$\phi$%.
 The levelset function is initialized from a circle with the \texttt{bwdist}-function.\\
 If the absolute gradient $\zeta_{i,j}, \eta_{i,j}$ \eqref{zetaeta} becomes too small, i.e. the difference between successive values is small, the length-regularization might become unbounded, yielding numerical instability. To prevent this from happening, the absolute gradient is bounded to $1$, hence if the size of $\zeta_{i,j}, \eta_{i,j}$ is smaller than $1$, it is set to be $1$.\\
 Since the matrices $P$ are large ($M\cdot N\times M\cdot N$ for $M\times N$-images) and they only contain entries on 5 diagonals, sparse matrix datastructures are used, yielding significantly faster computations.\\
-The matrix is solved using the efficient iterative solver \texttt{gmres}, because the equation systems are large.
+The matrix is solved using the efficient iterative solver \texttt{gmres}, because the equation systems are large.\\
+The reinitialization parameters are found emprically, $\tau$ is chosen to equal $0.1$, while $h,\epsilon$ are set to be 0.5. The convergence criterion is that $||\psi^{n+1}-\psi^n||_2 < h$. 
 
 
 \section{Orderless Levelset}
