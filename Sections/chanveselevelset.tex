@@ -251,14 +251,14 @@ For numerical purposes, it is convenient to smoothen the sign-function: $\sign_\
 Now, \eqref{reinit2} is a non-linear hyperbolic equation with characteristics given by $\vec{w}$ and $\vec{w}$ is a unit normal vector pointing outward from the 0-levelset.\\
 \cite{suss.94} poses the following discretization:
 \begin{align}
-a \equiv \frac{\Delta_x^- \psi_{i,j}}{h},\quad b \equiv \frac{\Delta_x^+ \psi_{i,j}}{h},\quad c \equiv \frac{\Delta_y^- \psi_{i,j}}{h}, \quad d \equiv \frac{\Delta_y^+ \psi_{i,j}}{h} 
+a_{i,j} = \frac{\Delta_x^- \psi_{i,j}}{h},\quad b_{i,j} = \frac{\Delta_x^+ \psi_{i,j}}{h},\quad c_{i,j} = \frac{\Delta_y^- \psi_{i,j}}{h}, \quad d_{i,j} = \frac{\Delta_y^+ \psi_{i,j}}{h} 
 \end{align}
 
-where the gradient $\nabla \psi$ is approximated by 
+where the gradient $\nabla \psi-1$ is approximated by 
 \begin{align}
   G(\psi_{i,j}) = \begin{cases}
-    \sqrt{\max\{(a^+)^2,(b^-)^2\}+\max\{(c^+)^2,(d^-)^2}\}-1 & \mbox{ if } \phi_{i,j}>0\\
-    \sqrt{\max\{(a^-)^2,(b^+)^2\}+\max\{(c^-)^2,(d^+)^2}\}-1 & \mbox{ if } \phi_{i,j}<0\\
+    \sqrt{\max\{(a_{i,j}^+)^2,(b_{i,j}^-)^2\}+\max\{(c_{i,j}^+)^2,(d_{i,j}^-)^2}\}-1 & \mbox{ if } \phi_{i,j}>0\\
+    \sqrt{\max\{(a_{i,j}^-)^2,(b_{i,j}^+)^2\}+\max\{(c_{i,j}^-)^2,(d_{i,j}^+)^2}\}-1 & \mbox{ if } \phi_{i,j}<0\\
     0 &\mbox{ if } \phi_{i,j}=0
   \end{cases}
 \end{align}
