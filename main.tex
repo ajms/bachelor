@@ -74,7 +74,7 @@
 \emph{Author:}\\
 {\authornames}\\[0.5cm] % Author name - remove the \href bracket to remove the link
 \emph{Supervisors:} \\
-{\supname}\\[9cm] % Supervisor name - remove the \href bracket to remove the link  
+{\supname}\\[8.5cm] % Supervisor name - remove the \href bracket to remove the link  
 
 \deptname\\ % Research group name and department name
 {\large June 7, 2013} % Date
@@ -90,7 +90,7 @@
 \addtotoc{Abstract} % Add the "Abstract" page entry to the Contents
 
 \abstract{\addtocontents{toc}{\vspace{1em}} % Add a gap in the Contents, for aesthetics
-In this bachelor thesis, Chan \& Vese's active contour levelset method based on the Mumford-Shah functional for segmentation is gone through. The method is used as a foundation to develop a new orderless levelset formulation based on the framework of Locally Orderless Images. That is we propose a energy functional consisting of histograms that is minimized using well known optimization techniques. This results in a pliant method that is not dependent on the spatial order in the image and thus generalizes to $n$-dimensional images. Besides the theoretical formulation of the functional, implementations of and Chan Vese's method and the new Orderless Levelset method are compared experimentally using a variety of different images investigating the properties of the methods. In the experiments, we find that the simplicity of the Locally Orderless Levelset method results in fast computation times in our implementations.
+In this bachelor thesis, Chan \& Vese's active contour levelset method based on the Mumford-Shah functional for image segmentation is explained. The method is used as a foundation to develop a new orderless levelset formulation based on the framework of Locally Orderless Images. That is we propose a energy functional consisting of histograms that is minimized using well known optimization techniques. Thereby we obtain a pliant method that is not dependent on the spatial order in the image and thus generalizes to $n$-dimensional images. Besides the theoretical formulation of the functional, implementations of and Chan \& Vese's Levelset method and the new Orderless Levelset method are compared experimentally using a variety of different images investigating the properties of the methods. In the experiments, we find that the simplicity of the Locally Orderless Levelset method results in fast computation times using our implementation.
 }
 
 \clearpage % Start a new page
@@ -116,6 +116,7 @@ The acknowledgements and the people to thank go here, don't forget to include yo
 
 \lhead{\emph{Contents}} % Set the left side page header to "Contents"
 \tableofcontents % Write out the Table of Contents
+
 \iffalse
 \lhead{\emph{List of Figures}} % Set the left side page header to "List of Figures"
 \listoffigures % Write out the List of Figures
@@ -177,7 +178,6 @@ $\cdot *\cdot$ & Convolution operator.\\
 \input{./Sections/loi}
 \input{./Sections/ol}
 \input{./Sections/experiments}
-\input{./Sections/definitions}
 \input{./Sections/conclusion}
 
 %----------------------------------------------------------------------------------------

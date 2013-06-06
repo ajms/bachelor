@@ -22,8 +22,8 @@ The levelset function is initialized from a circle with the \texttt{bwdist}-func
 If the absolute gradient $\zeta_{i,j}, \eta_{i,j}$ \eqref{zetaeta} becomes too small, i.e. the difference between successive values is small, the length-regularization might become unbounded, yielding numerical instability. To prevent this from happening, the absolute gradient is bounded to $1$, hence if the size of $\zeta_{i,j}, \eta_{i,j}$ is smaller than $1$, it is set to be $1$.\\
 Since the matrices $P$ are large ($M\cdot N\times M\cdot N$ for $M\times N$-images) and they only contain entries on 5 diagonals, sparse matrix datastructures are used, yielding significantly faster computations.\\
 The matrix is solved using the efficient iterative solver \texttt{gmres}, because the equation systems are large.\\
-The reinitialization parameters are found emprically, $\tau$ is chosen to equal $0.1$, while $h,\epsilon$ are set to be 0.5. The convergence criterion is that $||\psi^{n+1}-\psi^n||_2 < h$. 
-
+The reinitialization parameters are found emprically, $\tau$ is chosen to equal $0.1$, while $h,\epsilon$ are set to be 0.5. The convergence criterion is that $||\psi^{n+1}-\psi^n||_2 < h$. \\
+The source code is available on \href{https://github.com/ajms/chanvese}{https://github.com/ajms/chanvese}.
 
 \section{Orderless Levelset}
 The OL-method is implemented in Matlab, using the Parzen window and optimization choices from \sref{section:OLopt}.\\
@@ -43,3 +43,4 @@ Output: 0'th levelcurve of %$\phi$%.
 
 The Gaussian scale space $G$ is calculated using Fourier transformation. For this, the built-in function fast Fourier transform \texttt{fftn} is used and the scale space is calculated by a function \texttt{scalen} by Jon Sporring. The Fourier transform assumes our image to be periodic, this might cause problems on the boundary, because smoothing on the boundary is transformed to the opposite boundary. Since most of the images, we are considering, have a plain background, this does not matter.\\
 When $\mu=0$ - the parameter to control the length regularization, the levelset is normalized before the first iteration such that $\phi\in [-1,1]$. This yields faster convergnece, because the choice of a cubic B-spline means that only the values in $\{-1,0,1,2\}$ can switch bins, thus normalizing ensures that any point in $\Omega$ may switch segment in the first iteration. The levelset values also are kept correspondingly lower, though the levelset evolves easier. Obviously, we cannot do this, when we are interested in regularizing for the contours length, because the 0'th bin would become an area.\\
+The source code is available on \href{https://github.com/ajms/lol}{https://github.com/ajms/lol}.

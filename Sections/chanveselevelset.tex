@@ -16,9 +16,9 @@ where $\mathcal{M}_{\omega}$ measures the similarity of the inner segment and $\
 \end{equation} 
 
 corresponding to the splitting of the image into two pieces with different constant intensity.\\
-Suppose that $I$ is a simple image consisting of a constant square on a constant background, the functional $F_1$ will be minimal exactly when $C$ lies on the boundary of the square. Letting $c_1$ be given by any value  $I(x,y)$ in the square and $c_2$ by any value $I(x,y)$ in the background, $(I(x,y)-c_1)^2$ and $(I(x,y)-c_2)^2$ will equal 0 on the entire domain, hence $F_1=0$ which is a minimum, since $F$ is positive.\\
+Suppose that $I$ is a simple image consisting of a constant square on a constant background. Then the functional $F_1$ will be minimal exactly when $C$ lies on the boundary of the square. Letting $c_1$ be given by any value  $I(x,y)$ in the square and $c_2$ by any value $I(x,y)$ in the background, $(I(x,y)-c_1)^2$ and $(I(x,y)-c_2)^2$ will equal 0 on the entire domain, hence $F_1=0$ which is a minimum, since $F$ is positive.\\
 
-This leads to the idea of measuring the difference between the image values and some fixed but unknown values $c_1,c_2$ defined on the subdomains $\omega$ and $\Omega\backslash \overline{\omega}$, separated by an unknown curve $C$. Then $F_1$ is minimized by adjusting the curve $C$ such that any $I(x,y)$ is placed into the segment, where the difference to those values is the least.\\
+This leads to the idea of measuring the difference between the image values and some fixed, but unknown values $c_1,c_2$, defined on the subdomains $\omega$ and $\Omega\backslash \overline{\omega}$, separated by an unknown curve $C$. Then $F_1$ is minimized by adjusting the curve $C$ such that any $I(x,y)$ is placed into the segment, where the difference to those values is the least.\\
 
 Adding regularization terms, penalizing the length of $C$ and the area of $\omega$ yields the following functional:
 \begin{equation}
@@ -30,7 +30,7 @@ Adding regularization terms, penalizing the length of $C$ and the area of $\omeg
 
 where the parameters $\lambda_1,\,\lambda_2\in (0,\infty)$ and $\mu,\,\nu\in [0,\infty)$ are fixed to weight the different terms. By minimizing for the length, we ensure that the image is not segmented into many small disjoint parts. This also reduces the influence of possible noise in the image.\\
 Furthermore the Length minimization causes the inner segment to become more convex, since the length of the curve is minimal, when $C$ has the form of a circle.\\
-Additionally the Area-term causes the area of the inner segment to be as small as possible. The area regularization has to some extent the opposite effect of the length regularization, since small disjoint segments have a smaller area than one convex segment, which is prefered by the length regularization.\\
+The Area-term causes the area of the inner segment to be as small as possible. The area regularization has to some extent the opposite effect of the length regularization, since small disjoint segments have a smaller area than one convex segment, which is prefered by the length regularization.\\
 
 In order to minimize $F_2$, we consider the minimization problem $\inf_{C,c_1,c_2}F_2(C,c_1,c_2)$. The contour $C$ can be represented as the $0$-Levelset in the levelset method as follows. The levelset function is represented by a Lipschitz-function $\phi:\Omega\to\R$, such that
 \begin{align*}
@@ -42,7 +42,7 @@ In order to minimize $F_2$, we consider the minimization problem $\inf_{C,c_1,c_
   \end{cases}.
 \end{align*}
 
-The concept is illustrated in figure \ref{fig:levelsetconcept}.
+This concept is illustrated in figure \ref{fig:levelsetconcept}.
 
 \begin{figure}
   \centering
@@ -75,7 +75,7 @@ in terms of a levelset formulation. Note that expanding the integral over $\omeg
 
 \section{Minimization}
 We introduce regularized versions of the heavyside- and Dirac functions $H_\epsilon$ and $\delta_\epsilon$ that are continuous, such that $H_\epsilon\to H$ as $\epsilon\to 0$, $H'(z) = \delta_\epsilon$.\\
-In order to minimize for $c_1$, we fix $\phi$ and $c_2$ and minimize \eqref{F2} wrt. $c_1$. Hence, by elementary calculus, we find $c_1$ such that $\frac{\partial F}{\partial c_1}=0$ and assure that $\frac{\partial^2 F(\phi,c_1,c_2)}{\partial c_1^2} > 0$. This will find a minimum of $F$ wrt. $c_1$.\\
+In order to minimize for $c_1$, we fix $\phi$ and $c_2$ and minimize \eqref{F2} wrt. $c_1$. Hence, by elementary calculus, we find $c_1$ such that $\frac{\partial F}{\partial c_1}=0$ and assure that $\frac{\partial^2 F(\phi,c_1,c_2)}{\partial c_1^2} > 0$. This will be a minimum of $F$ wrt. $c_1$.\\
 Disregarding zero-terms, we can use the Leibniz integration rule because of the continuity assumption of $H_\epsilon$ and $\delta_\epsilon$. This leads to
 \begin{align}
   0 &= \frac{\partial}{\partial c_1} \left(\int_\Omega (I(x,y)-c_1)^2H(\phi(x,y))\df x \df y\right)=\int_\Omega \frac{\partial}{\partial c_1} \left((I(x,y)-c_1)^2H(\phi(x,y))\right)\df x \df y\\
@@ -89,7 +89,7 @@ Splitting the integral and rearranging gives
 
 Furthermore we have 
 \begin{equation}
-\frac{\partial^2 F}{\partial c_1^2} \stackrel{\eqref{dFdc1}}{=} \frac{\partial}{\partial c_1} \int_\Omega -2(I(x,y)-c_1)H(\phi(x,y))\df x \df y = \int_\Omega 2H(\phi(x,y))\df x \df y \geq 0\; \text{for all} \; c_1.
+\frac{\partial^2 F}{\partial c_1^2} \stackrel{\eqref{dFdc1}}{=} \frac{\partial}{\partial c_1} \left(\int_\Omega -2(I(x,y)-c_1)H(\phi(x,y))\df x \df y\right) = \int_\Omega 2H(\phi(x,y))\df x \df y \geq 0\; \text{for all} \; c_1.
 \end{equation}
 
 A similar argument can be formulated for $c_2$. Thus, we can express $c_1$ and $c_2$ as constants dependent on $\phi$ by
@@ -107,7 +107,7 @@ Assume that $c_1$ and $c_2$ are constants, then Euler Lagrange-equation of $F$ i
   0 = \partial_\phi L - \partial_x (\partial_{\phi'_x}L)-\partial_y(\partial_{\phi'_y} L)
 \end{equation}
 
-where $L$ is the integrant of all integrals in \eqref{F2}. Here $\partial_x,\partial_y$ denote the differential operators wrt. $x,y$, and $\partial_{\phi'_x}, \partial_{\phi'_y}$ are the differential operators wrt. the $x$ and $y$-part of the derivative of $\phi$. Thus
+where $L$ is the integrant of all integrals in \eqref{F2}. Here $\partial_x,\partial_y$ denote the differential operators wrt. $x,y$, and $\partial_{\phi'_x}, \partial_{\phi'_y}$ are the differential operators wrt. the $x$- and $y$-part of the derivative of $\phi$. Thus
 \begin{equation}
   \partial_\phi L = \left(\lambda_1\abs{I-c_1}^2 - \lambda_2\abs{I-c_2}^2 + \nu \right)\delta_\epsilon(\phi) + \mu\delta_\epsilon'(\phi)\abs{\nabla\phi}
 \end{equation}
@@ -135,12 +135,12 @@ The $\partial_y (\partial_{\phi'_y}L)$-part is found similarly. Combining those 
 \end{equation}
 By the Euler Lagrange equation, the functional $F$ \eqref{F2} is stationary for $\phi$ satisfying \eqref{EulerLagrangeSol}.
 
-To find the stationary point that is a (global) minimum of the functional $F$, we introduce an artificial time parameterization $t\geq 0$ for the steepest descent direction. Thus we let $\phi: [0,\infty) \times \Omega \to \R$ as $\phi(t,x,y)$, such that $\phi(0,x,y)=\phi_0(x,y)$, where $\phi_0(x,y)$ is an initial levelset function. This gives the following differential equation, we wish to solve:
+To find the stationary point that is a minimum of the functional $F$, we introduce an artificial time parameterization $t\geq 0$ for the steepest descent direction. Thus, we let $\phi: [0,\infty) \times \Omega \to \R$ be given by $\phi(t,x,y)$, such that $\phi(0,x,y)=\phi_0(x,y)$, where $\phi_0(x,y)$ is an initial levelset function. This gives the following differential equation, we wish to solve:
 \begin{equation}
   \frac{\partial \phi}{\partial t}=\left(-\lambda_1(I-c_1)^2 + \lambda_2(I-c_2)^2 - \nu  + \mu \nabla \cdot \left(\frac{\nabla\phi}{\abs{\nabla\phi}}\right)\right)\delta_\epsilon(\phi).\label{dphidt}
 \end{equation}
 
-As boundary condition, \cite{chan.01} poses 
+As boundary condition, Chan \& Vese propose
 \begin{equation}
   \frac{\partial \phi}{\partial \vec{n}}\frac{\delta_\epsilon(\phi)}{\abs{\nabla\phi}}=0\text{ on }\partial\Omega,
 \end{equation} 
@@ -149,7 +149,7 @@ where $\frac{\partial\phi}{\partial \vec{n}}$ denotes the derivative wrt. the ex
 
 
 \section{Numerical Scheme of the Chan Vese Levelset}\label{section:numscheme}
-The following $C^\infty(\overline{\Omega})$ regularizations of the heavyside- and dirac function were suggested by \cite{chan.01}. They are visualized in figure \ref{fig:regularizations} for different values of $\epsilon$.
+The following $C^\infty(\overline{\Omega})$ regularizations of the heavyside- and dirac function were suggested by Chan \& Vese. They are visualized in figure \ref{fig:regularizations} for different values of $\epsilon$.
 \begin{figure}
   \centering
   \subfigure[\label{subfig:hside}]{\includegraphics[width=0.4\textwidth]{Hside.eps}}
@@ -161,11 +161,11 @@ The following $C^\infty(\overline{\Omega})$ regularizations of the heavyside- an
   H_\epsilon(z) = \frac{1}{2}\left(1+\frac{2}{\pi}\arctan\left(\frac{z}{\epsilon}\right)\right),\quad \frac{\partial}{\partial z}H(z) = \delta_\epsilon(z) = \frac{\epsilon}{\pi z^2+\pi\epsilon^2}
 \end{equation}
 
-Since the functional is non-convex, there might appear several local minima. The discretization should not depend on the initial choice $\phi_0$ which is prevented by choosing regularizations with infinite support. Thus the heavyside and dirac functions act on the entire levelset function instead of just influencing a small neighborhood around the 0'th level curve.\\
+Since the functional is non-convex, there might appear several local minima. The discretization should not depend on the initial choice $\phi_0$ which is prevented by choosing regularizations with infinite support. Thereby, the heavyside and dirac functions act on the entire levelset function instead of just influencing a small neighborhood around the 0'th level curve.\\
 
 The discretization of $\phi$ is done by an implicit finite difference system. Let $h$ be the space step size and let $\Delta t$ be the time step size. An $M\times N$ equidistant grid is used, where $(x_i,y_j) = (i\cdot h,j\cdot h)$ are the grid points for $0\leq i \leq M+1$, $0\leq j \leq N+1$. $\phi(t,x,y)$ is approximated by $\phi_{i,j}^n = \phi(n\Delta t, x_i,y_j)$ for $n\in\N$ using $\phi_{i,j}^0 = \phi_0$, the initial levelset as a signed distance function. The boundaries are thus $\phi_{0,j}^n$, $\phi_{M+1,j}^n$, $\phi_{i,0}^n$, $\phi_{i,N+1}^n$.\\
 
-In the numerical scheme, the following standard notation is used:
+The following standard notation is used for the difference approximations.
 \begin{align}
 \begin{array}{ll}
 \Delta_{-}^x \phi_{i,j} = \phi_{i,j}-\phi_{i-1,j}, & \Delta_{+}^x \phi_{i,j} = \phi_{i+1,j}-\phi_{i,j},\\
@@ -179,7 +179,7 @@ The divergence term in \eqref{dphidt} is split up into
   \nabla\cdot \frac{\nabla\phi}{\abs{\nabla\phi}} = \partial_x\underbrace{\left(\frac{\partial_x \phi}{\abs{\nabla\phi}}\right)}_{(a)} + \partial_y\underbrace{\left(\frac{\partial_y \phi}{\abs{\nabla\phi}}\right)}_{(b)}.
 \end{equation}
 
-The boundary condition only suffices for a 3 point scheme in each direction. Therefore, in (a) the gradients $y$-direction can be approximated by a central scheme. But since we find the derivative into the $x$-direction in (a) using a backward scheme, we can only use a forward scheme in the gradient's $x$-direction and vice versa for (b). The discretization and linearization then looks as follows:
+The boundary condition only suffices for a 3 point scheme in each direction. Therefore, in (a) the gradients $y$-direction can be approximated by a central scheme. But since we find the derivative into the $x$-direction using a backward scheme, we can only use a forward scheme in the gradient's $x$-direction and vice verse for (b). The discretization and linearization then looks as follows:
 \begin{equation}
   \begin{split}
     &\frac{\phi_{i,j}^{n+1}-\phi_{i,j}^n}{\Delta t} = \delta_\epsilon(\phi_{i,j}^n) \left[\frac{\mu}{h^2}\cdot 
@@ -235,13 +235,13 @@ Since the scheme is implicit, it is necessary to solve an equation system. In or
 
 The boundary conditions are also added to $P$, such that they appear on the rows, where the boundary is hit.
 
-Using the levelset approach and the dirac function, the levelset curve might not be a signed distance map anymore, i.e. $\abs{\nabla \phi}\neq 1$. Thus the $\nabla\phi$ can become too flat which prevents $\phi$ from evolving. $\nabla\phi$ might also become too steep which complicates the computation of the contour length. To prevent this, one re-initializes the levelset curve as a signed distance function, \cite{suss.94} poses the following evolution equation:
+Using the levelset approach and in particular the dirac function, the levelset curve might evolve to not being a signed distance map anymore, i.e. $\abs{\nabla \phi}\neq 1$. Thus the $\nabla\phi$ can become too flat which prevents $\phi$ from evolving. $\nabla\phi$ might also become too steep which complicates the computation of the contour length. To ensure further evolution of the curve, one re-initializes the levelset curve as a signed distance function. The following evolution equation was posed by \cite{suss.94}:
 \begin{align}
 \psi_\tau = \sign(\phi(t))(1-\abs{\psi})\label{reinit1}\\
-\psi(0,\cdot) = \phi(t,\cdot)
+\psi(0,\cdot) = \phi(t,\cdot).
 \end{align}
 
-This will preserve the 0-levelset. The new levelset function will then be $\psi$ and the value of $\abs{\nabla \psi}$ will converge to 1.
+The new levelset function will then be $\psi$ and the value of $\abs{\nabla \psi}$ will converge to 1.
 For numerical purposes, it is convenient to smoothen the sign-function: $\sign_\epsilon(\phi) = \phi/\sqrt{\phi^2+\epsilon^2}$.\\
 \eqref{reinit1} can be written as
 \begin{equation}
@@ -249,12 +249,12 @@ For numerical purposes, it is convenient to smoothen the sign-function: $\sign_\
 \end{equation}
 
 Now, \eqref{reinit2} is a non-linear hyperbolic equation with characteristics given by $\vec{w}$ and $\vec{w}$ is a unit normal vector pointing outward from the 0-levelset.\\
-\cite{suss.94} poses the following discretization:
+This discretization is posed by \cite{suss.94}:
 \begin{align}
-a_{i,j} = \frac{\Delta_x^- \psi_{i,j}}{h},\quad b_{i,j} = \frac{\Delta_x^+ \psi_{i,j}}{h},\quad c_{i,j} = \frac{\Delta_y^- \psi_{i,j}}{h}, \quad d_{i,j} = \frac{\Delta_y^+ \psi_{i,j}}{h} 
+a_{i,j} = \frac{\Delta_x^- \psi_{i,j}}{h},\quad b_{i,j} = \frac{\Delta_x^+ \psi_{i,j}}{h},\quad c_{i,j} = \frac{\Delta_y^- \psi_{i,j}}{h}, \quad d_{i,j} = \frac{\Delta_y^+ \psi_{i,j}}{h}.
 \end{align}
 
-where the gradient $\nabla \psi-1$ is approximated by 
+Here the gradient $\nabla \psi-1$ is approximated by 
 \begin{align}
   G(\psi_{i,j}) = \begin{cases}
     \sqrt{\max\{(a_{i,j}^+)^2,(b_{i,j}^-)^2\}+\max\{(c_{i,j}^+)^2,(d_{i,j}^-)^2}\}-1 & \mbox{ if } \phi_{i,j}>0\\
@@ -263,9 +263,9 @@ where the gradient $\nabla \psi-1$ is approximated by
   \end{cases}
 \end{align}
 
-where $+$ and $-$ denote the positive and the negative part respectively, i.e. if the sign of the derivative approximation is positive, then the negative part is 0 and vice versa. Furthermore, $G$ is formulated such that if the forward and the backward approximations of the derivatives yield different signs, the largest is chosen. In any other case, one of them will be 0. The equation \eqref{reinit2} is then updated by 
+where $+$ and $-$ denote the positive and the negative part respectively, i.e. if the sign of the derivative approximation is positive, then the negative part is 0 and vice verse. Furthermore, $G$ is formulated such that if the forward and the backward approximations of the derivatives yield different signs, the largest is chosen. In any other case, one of them will be 0. The equation \eqref{reinit2} is then updated by 
 \begin{equation}
 \psi_{i,j}^{n+1}=\psi_{i,j}^n - \Delta t \;\sign_\epsilon(\phi_{i,j})G(\psi_{i,j}^n).
 \end{equation}
 
-The reinitialization ensures that the contour does not change, since $G$ is defined to be 0 on the boundary of the inner segment. Since we subtract the absolute gradient minus 1 in each iteration, the method has converged exactly when the absolute gradient in $\psi$ equals 1 in every point.
+The re-initialization ensures that the contour does not change, since $G$ is defined to be 0 on the boundary of the inner segment. Since we subtract the absolute gradient minus 1 in each iteration, the method has converged exactly when the absolute gradient in $\psi$ equals 1 in every point.

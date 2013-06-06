@@ -75,8 +75,8 @@
                         { 2cm}  % top margin
                         { 2cm}  % right margin
                         { 2cm}  % bottom margin
-                        { 0.30cm}  % head height
-                        {0.4cm}  % head sep
+                        { 0.3cm}  % head height
+                        {0.8cm}  % head sep
                         {   9pt}  % foot height
                         { 0.5cm}  % foot sep
 %----------------------------------------------------------------------------------------
