@@ -13,10 +13,11 @@ Thus we use the Locally Orderless Images notion over the levelset function $\phi
 The ``Locally Orderless'' property has no immediate use in this formulation of the levelset method, even though it might be applicable in further work on this method. For now, we introduce the Orderless Levelset functional by letting $\alpha\to \infty$, then the spatial window $W(\vec{x}_0,\alpha)$ will tend to a constant value $K$ on the whole $\Omega$-domain. Thus the histogram simplifies to
 \begin{equation}
   \begin{split}
-    h_{I,\phi}(i,j,\vec{x}_0,\alpha,\vec{\beta},\vec{\sigma})\to h_{I,\phi}(i,j,\vec{\beta},\vec{\sigma}) &= \int _\Omega KP_1(G(\vec{x},\sigma_1)*I(\vec{x})-i,\beta_1)P_2(G(\vec{x},\sigma_2)-j)*I(\vec{x}),\beta_2)\df x_0\\
-    &= P_1(G(\vec{x},\sigma_1)*I(\vec{x})-i,\beta_1)P_2(G(\vec{x},\sigma_2)-j)*I(\vec{x}),\beta_2),
+    h_{I,\phi}(i,j,\vec{x}_0,\alpha,\vec{\beta},\vec{\sigma})\to h_{I,\phi}(i,j,\vec{\beta},\vec{\sigma}) &= \int _\Omega KP_1(G(\vec{x},\sigma_1)*I(\vec{x})-i,\beta_1)P_2(G(\vec{x},\sigma_2)*\phi(\vec{x})-j,\beta_2)\df x_0\\
+    &= P_1(G(\vec{x},\sigma_1)*I(\vec{x})-i,\beta_1)P_2(G(\vec{x},\sigma_2)*\phi(\vec{x})-j,\beta_2),
   \end{split}
 \end{equation}
+
 because the $W$ defined in \eqref{loikernel} integrates to 1.\\
 
 In order to propose the Chan \& Vese functional in terms of orderless histograms, the following considerations are made:\\
@@ -32,7 +33,7 @@ The considerations above yield the following functional that resembles Chan \& V
     &+ \lambda_2\int 1_\Gamma(i) 1_{\R_-}(j) \abs{i-c_2}^2h_{I,\phi}(i,j,\vec{\beta},\vec{\sigma})\df m_2(i, j),
   \end{split}\label{LOLF}
 \end{equation}
-where $m_2$ is the two-dimensional Lebesgue measure and $m$ is the one-dimensional Lebesgue measure. Furthermore, $1_\Gamma(i), 1_{\R^+}(j)$ and $1_{\R^-}(i)$ are indicator functions to measure the segments and regularizations according to the Chan Vese functional \eqref{F1}.\\
+where $m_2$ is the two-dimensional Lebesgue measure and $m$ is the one-dimensional Lebesgue measure. Furthermore, $1_\Gamma(i), 1_{\R_+}(j)$ and $1_{\R_-}(i)$ are indicator functions to measure the segments and regularizations according to the Chan Vese functional \eqref{F1}.\\
 
 To prove existence, the following theorem is used:
 \begin{theorem}[Tonelli]\label{Tonelli}
